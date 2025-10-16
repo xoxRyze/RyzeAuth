@@ -3,6 +3,7 @@ package it.xoxryze.ryzeAuth.commands;
 import it.xoxryze.ryzeAuth.RyzeAuth;
 import it.xoxryze.ryzeAuth.database.DatabaseManager;
 import it.xoxryze.ryzeAuth.utils.Palette;
+import it.xoxryze.ryzeAuth.utils.PasswordUtils;
 import net.kyori.adventure.text.Component;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -48,7 +49,7 @@ public class UnregisterCommand implements CommandExecutor {
         }
 
         if (main.authenticated.contains(player.getUniqueId())) {
-            if (!args[0].equals(playerpw)) {
+            if (!PasswordUtils.checkPassword(args[0], playerpw)) {
                 player.sendMessage(Component.text("La password non è corretta!", Palette.RED));
                 return true;
             }

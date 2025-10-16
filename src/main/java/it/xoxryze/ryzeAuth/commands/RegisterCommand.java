@@ -3,6 +3,7 @@ package it.xoxryze.ryzeAuth.commands;
 import it.xoxryze.ryzeAuth.RyzeAuth;
 import it.xoxryze.ryzeAuth.database.DatabaseManager;
 import it.xoxryze.ryzeAuth.utils.Palette;
+import it.xoxryze.ryzeAuth.utils.PasswordUtils;
 import net.kyori.adventure.text.Component;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -77,7 +78,7 @@ public class RegisterCommand implements CommandExecutor {
         }
 
         try {
-            db.updatePlayerPassword(player, args[0]);
+            db.updatePlayerPassword(player, PasswordUtils.hashPassword(args[0]));
             db.updatePlayerAdress(player, player.getAddress().toString());
         } catch (SQLException e) {
             throw new RuntimeException(e);

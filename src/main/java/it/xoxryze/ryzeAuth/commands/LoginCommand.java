@@ -3,6 +3,7 @@ package it.xoxryze.ryzeAuth.commands;
 import it.xoxryze.ryzeAuth.RyzeAuth;
 import it.xoxryze.ryzeAuth.database.DatabaseManager;
 import it.xoxryze.ryzeAuth.utils.Palette;
+import it.xoxryze.ryzeAuth.utils.PasswordUtils;
 import net.kyori.adventure.text.Component;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -52,7 +53,7 @@ public class LoginCommand implements CommandExecutor {
             return true;
         }
 
-        if (args[0].equals(playerpassword)) {
+        if (!PasswordUtils.checkPassword(args[0], playerpassword)) {
             player.sendMessage(Component.text("Ti sei autenticato con successo!", Palette.GREEN));
             main.authenticated.add(player.getUniqueId());
             try {

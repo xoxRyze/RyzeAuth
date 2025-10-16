@@ -3,6 +3,7 @@ package it.xoxryze.ryzeAuth.commands;
 import it.xoxryze.ryzeAuth.RyzeAuth;
 import it.xoxryze.ryzeAuth.database.DatabaseManager;
 import it.xoxryze.ryzeAuth.utils.Palette;
+import it.xoxryze.ryzeAuth.utils.PasswordUtils;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.HoverEvent;
 import org.bukkit.Bukkit;
@@ -112,7 +113,8 @@ public class AdminauthCommand implements CommandExecutor {
                 }
 
                 try {
-                    db.updatePlayerPassword(target, args[2]);
+                    String hashed = PasswordUtils.hashPassword(args[2]);
+                    db.updatePlayerPassword(target, hashed);
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
                 }
@@ -210,7 +212,8 @@ public class AdminauthCommand implements CommandExecutor {
                 }
 
                 try {
-                    db.updatePlayerPassword(target, args[2]);
+                    String hashed = PasswordUtils.hashPassword(args[2]);
+                    db.updatePlayerPassword(target, hashed);
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
                 }

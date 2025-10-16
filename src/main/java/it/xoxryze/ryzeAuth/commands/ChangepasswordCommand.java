@@ -3,6 +3,7 @@ package it.xoxryze.ryzeAuth.commands;
 import it.xoxryze.ryzeAuth.RyzeAuth;
 import it.xoxryze.ryzeAuth.database.DatabaseManager;
 import it.xoxryze.ryzeAuth.utils.Palette;
+import it.xoxryze.ryzeAuth.utils.PasswordUtils;
 import net.kyori.adventure.text.Component;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -22,7 +23,6 @@ public class ChangepasswordCommand implements CommandExecutor {
         this.db = db;
     }
 
-
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String @NotNull [] args) {
 
@@ -41,51 +41,51 @@ public class ChangepasswordCommand implements CommandExecutor {
         }
 
         if (args.length != 2) {
-            player.sendMessage(Component.text("Utilizza /changepassword <password> <newpassword>", Palette.RED));
+            player.sendMessage(Component.text("Utilizza /changepassword <password> <nuovapassword>", Palette.RED));
             return true;
         }
 
-        String playerNowPassword;
-        String playerNewPassword = args[1];
+        String currentHashedPassword;
+        String newPassword = args[1];
+
         try {
-            playerNowPassword = db.getPlayerPassword(player);
+            currentHashedPassword = db.getPlayerPassword(player);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
 
-        if (!args[0].equals(playerNowPassword)) {
-            player.sendMessage(Component.text("La password è errata.", Palette.RED));
+        if (!PasswordUtils.checkPassword(args[0], currentHashedPassword)) {
+            player.sendMessage(Component.text("La password attuale è errata.", Palette.RED));
             return true;
         }
 
-        if (playerNowPassword.equals(playerNewPassword)) {
-            player.sendMessage(Component.text("Le password sono identiche!", Palette.RED));
+        if (PasswordUtils.checkPassword(newPassword, currentHashedPassword)) {
+            player.sendMessage(Component.text("La nuova password è identica alla precedente!", Palette.RED));
             return true;
         }
 
-        if (playerNewPassword.contains("ciao") || (playerNewPassword.contains(player.getName()) ||
-                (playerNewPassword.equals("12345")))) {
+        if (newPassword.contains("ciao") || newPassword.contains(player.getName()) || newPassword.equals("12345")) {
             player.sendMessage(Component.text("La password è troppo debole!", Palette.RED));
             return true;
         }
 
-        Integer lunghezzapw = playerNewPassword.length();
-
-        if (lunghezzapw < 5) {
+        if (newPassword.length() < 5) {
             player.sendMessage(Component.text("La password è troppo corta!", Palette.RED));
             return true;
         }
 
-        if (lunghezzapw > 16) {
+        if (newPassword.length() > 16) {
             player.sendMessage(Component.text("La password è troppo lunga!", Palette.RED));
             return true;
         }
 
         try {
-            db.updatePlayerPassword(player, playerNewPassword);
+            String hashedNewPassword = PasswordUtils.hashPassword(newPassword);
+            db.updatePlayerPassword(player, hashedNewPassword);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+
         player.sendMessage(Component.text("Hai cambiato la password con successo.", Palette.GREEN));
         return true;
     }
