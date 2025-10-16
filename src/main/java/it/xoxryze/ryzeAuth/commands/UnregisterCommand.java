@@ -31,7 +31,8 @@ public class UnregisterCommand implements CommandExecutor {
         }
 
         if (args.length != 1) {
-            player.sendMessage(Component.text("Utilizza /unregister <password>", Palette.RED));
+            player.sendMessage(Component.text(main.getConfig().getString("messages.usage-unregister",
+                    "§cUtilizza /unregister <password>")));
             return true;
         }
 
@@ -44,13 +45,13 @@ public class UnregisterCommand implements CommandExecutor {
         }
 
         if (playerpw == null) {
-            player.sendMessage(Component.text("Non sei registrato, dunque non puoi farlo!", Palette.RED));
+            player.sendMessage(Component.text(main.NOT_REGISTERED));
             return true;
         }
 
         if (main.authenticated.contains(player.getUniqueId())) {
             if (!PasswordUtils.checkPassword(args[0], playerpw)) {
-                player.sendMessage(Component.text("La password non è corretta!", Palette.RED));
+                player.sendMessage(Component.text(main.PASSWORD_SBAGLIATA));
                 return true;
             }
             try {
@@ -59,10 +60,11 @@ public class UnregisterCommand implements CommandExecutor {
                 throw new RuntimeException(e);
             }
             main.authenticated.remove(player.getUniqueId());
-            player.sendMessage(Component.text("Ti sei unregistrato con successo!", Palette.GREEN));
+            player.sendMessage(Component.text(main.getConfig().getString("messages.success-unregistered",
+                    "§aTi sei unregistrato con successo!")));
             return true;
         }
-        player.sendMessage(Component.text("Devi essere autenticato per poterlo fare!", Palette.RED));
+        player.sendMessage(Component.text(main.NOT_AUTHENTICATED));
         return true;
     }
 }

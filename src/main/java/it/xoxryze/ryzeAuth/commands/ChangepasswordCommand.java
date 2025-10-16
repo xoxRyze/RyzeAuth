@@ -41,7 +41,8 @@ public class ChangepasswordCommand implements CommandExecutor {
         }
 
         if (args.length != 2) {
-            player.sendMessage(Component.text("Utilizza /changepassword <password> <nuovapassword>", Palette.RED));
+            player.sendMessage(Component.text(main.getConfig().getString("messages.usage-changepassword",
+                    "§cUtilizza /changepassword <password> <nuovapassword>")));
             return true;
         }
 
@@ -55,27 +56,27 @@ public class ChangepasswordCommand implements CommandExecutor {
         }
 
         if (!PasswordUtils.checkPassword(args[0], currentHashedPassword)) {
-            player.sendMessage(Component.text("La password attuale è errata.", Palette.RED));
+            player.sendMessage(Component.text(main.PASSWORD_SBAGLIATA));
             return true;
         }
 
         if (PasswordUtils.checkPassword(newPassword, currentHashedPassword)) {
-            player.sendMessage(Component.text("La nuova password è identica alla precedente!", Palette.RED));
+            player.sendMessage(Component.text(main.PASSWORD_IDENTICA));
             return true;
         }
 
         if (newPassword.contains("ciao") || newPassword.contains(player.getName()) || newPassword.equals("12345")) {
-            player.sendMessage(Component.text("La password è troppo debole!", Palette.RED));
+            player.sendMessage(Component.text(main.PASSWORD_NON_SICURA));
             return true;
         }
 
-        if (newPassword.length() < 5) {
-            player.sendMessage(Component.text("La password è troppo corta!", Palette.RED));
+        if (newPassword.length() < main.PW_LENGHT_MIN) {
+            player.sendMessage(Component.text(main.PASSWORD_CORTA));
             return true;
         }
 
-        if (newPassword.length() > 16) {
-            player.sendMessage(Component.text("La password è troppo lunga!", Palette.RED));
+        if (newPassword.length() > main.PW_LENGHT_MAX) {
+            player.sendMessage(Component.text(main.PASSWORD_LUNGA));
             return true;
         }
 
@@ -86,7 +87,8 @@ public class ChangepasswordCommand implements CommandExecutor {
             throw new RuntimeException(e);
         }
 
-        player.sendMessage(Component.text("Hai cambiato la password con successo.", Palette.GREEN));
+        player.sendMessage(Component.text(main.getConfig().getString("success-changepassword",
+                "§aHai cambiato la password con successo.")));
         return true;
     }
 }

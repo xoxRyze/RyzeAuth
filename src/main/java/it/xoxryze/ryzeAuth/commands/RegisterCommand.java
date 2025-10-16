@@ -31,7 +31,8 @@ public class RegisterCommand implements CommandExecutor {
         }
 
         if (args.length != 2) {
-            player.sendMessage(Component.text("Utilizza /register <password> <password>", Palette.RED));
+            player.sendMessage(Component.text(main.getConfig().getString("messages.usage-register",
+                    "§cUtilizza /register <password> <password>")));
             return true;
         }
 
@@ -44,36 +45,36 @@ public class RegisterCommand implements CommandExecutor {
         }
 
         if (main.authenticated.contains(player.getUniqueId())) {
-            player.sendMessage(Component.text("Sei già autenticato!", Palette.RED));
+            player.sendMessage(Component.text(main.ALREADY_AUTHENTICATED));
             return true;
         }
 
         if (playerpassword != null) {
             player.sendMessage(Component.text(
-                    "Il tuo account è già registrato!\nDigita /login <password> per autenticarti.", Palette.RED
+                    main.ALREADY_REGISTRED
             ));
             return true;
         }
 
         if (!args[0].equals(args[1])) {
-            player.sendMessage(Component.text("Le password non coincidono!", Palette.RED));
+            player.sendMessage(Component.text(main.PASSWORD_NON_COINCIDE));
             return true;
         }
 
         Integer lunghezzapw = args[0].length();
 
-        if (lunghezzapw < 5) {
-            player.sendMessage(Component.text("La password è troppo corta!", Palette.RED));
+        if (lunghezzapw < main.PW_LENGHT_MIN) {
+            player.sendMessage(Component.text(main.PASSWORD_CORTA));
             return true;
         }
 
-        if (lunghezzapw > 16) {
-            player.sendMessage(Component.text("La password è troppo lunga!", Palette.RED));
+        if (lunghezzapw > main.PW_LENGHT_MAX) {
+            player.sendMessage(Component.text(main.PASSWORD_LUNGA));
             return true;
         }
 
         if (args[0].contains("ciao") || args[0].contains(player.getName()) || args[0].equals("12345")) {
-            player.sendMessage(Component.text("La password non è abbastanza sicura!", Palette.RED));
+            player.sendMessage(Component.text(main.PASSWORD_NON_SICURA));
             return true;
         }
 
@@ -83,9 +84,10 @@ public class RegisterCommand implements CommandExecutor {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+        String registrated = main.getConfig().getString("messages.registrazione-compeltata",
+                "§aHai effettuato la registrazione con successo!");
         player.sendMessage(Component.text(
-                "Ti sei registrato con successo!\nNel caso dovessi perdere la password, attaccati al pisello",
-                Palette.GREEN));
+                registrated));
         main.authenticated.add(player.getUniqueId());
         return true;
     }

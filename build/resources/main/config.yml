@@ -1,0 +1,32 @@
+config:
+  password-lunghezza-min: 5
+  password-lunghezza-max: 16
+
+messages:
+  no-permission: "§cNon hai il permesso per poterlo fare!"
+  registrazione-completata: "§aHai effettuato la registrazione con successo!"
+  password-non-sicura: "§cLa password non è abbastanza sicura!"
+  password-corta: "§cLa password è troppo corta!"
+  password-lunga: "§cLa password è troppo lunga!"
+  password-non-coincide: "§cLe password non coincidono!"
+  already-registred: "§cIl tuo account è già registrato!\nDigita §l/login <password>§c per autenticarti."
+  already-authenticated: "§cHai già effettuato l'autenticazione!"
+  not-registered: "§cDevi essere registrato per poterlo fare!"
+  password-sbagliata: "§cLa password che hai inserito non è corretta!"
+  not-authenticated: "§cDevi essere autenticato per poterlo fare!"
+  success-unregistered: "§aTi sei unregistrato con successo!"
+  usage-unregister: "§cUtilizza /unregister <password>"
+  usage-register: "§cUtilizza /register <password> <password>"
+  usage-login: "§cUtilizza /login <password>"
+  usage-changepassword: "§cUtilizza /changepassword <password> <nuovapassword>"
+  usage-adminauth: "§cComando errato, utilizza /adminauth per informazioni"
+  usage-adminauth-checkip: "§cUtilizza /adminauth checkip <player>"
+  usage-adminauth-register: "§cUtilizza /adminauth register <player> <password>"
+  usage-adminauth-unregister: "§cUtilizza /adminauth unregister <player>"
+  usage-adminauth-changepassword: "§cUtilizza /adminauth changepassword <player> <password>"
+  success-login: "§aHai effettuato il login con successo!"
+  success-changepassword: "§aHai cambiato la password con successo."
+  password-identica: "§cLa nuova password è identica a quella attuale!"
+  player-never-join: "§cIl player non è mai entrato nel server!"
+  player-never-authenticated: "§cIl player non si è mai autenticato!"
+  event-not-authenticated: "§cNon sei autenticato, digita /login <password> o /register"

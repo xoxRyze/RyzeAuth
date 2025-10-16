@@ -59,7 +59,7 @@ public class AdminauthCommand implements CommandExecutor {
 
         if (sender instanceof Player player) {
             if (!player.hasPermission("ryzeauth.command.adminauth")) {
-                player.sendMessage(Component.text("Non hai il permesso per poterlo fare!", Palette.RED));
+                player.sendMessage(Component.text(main.NO_PERMISSION));
                 return true;
             }
         }
@@ -70,15 +70,15 @@ public class AdminauthCommand implements CommandExecutor {
             if (args[0].equalsIgnoreCase("changepassword")) {
 
                 if (args.length != 3) {
-                    sender.sendMessage(Component.text("Utilizza /adminauth changepassword <player> <password>",
-                            Palette.RED));
+                    sender.sendMessage(Component.text(main.getConfig().getString("messages.usage-adminauth-changepassword",
+                            "Utilizza /adminauth changepassword <player> <password>")));
                     return true;
                 }
 
                 OfflinePlayer target = Bukkit.getOfflinePlayer(args[1]);
 
                 if (!target.hasPlayedBefore()) {
-                    sender.sendMessage(Component.text("Il player non è mai entrato nel server!", Palette.RED));
+                    sender.sendMessage(Component.text(main.PLAYER_MAI_ENTRATO));
                     return true;
                 }
 
@@ -90,25 +90,26 @@ public class AdminauthCommand implements CommandExecutor {
                 }
 
                 if (targetpw == null) {
-                    sender.sendMessage(Component.text("Il player non si è mai autenticato.", Palette.RED));
+                    sender.sendMessage(Component.text(main.getConfig().getString("messages.player-never-authenticated",
+                            "§cIl player non si è mai autenticato!")));
                     return true;
                 }
 
                 if (args[2].contains("ciao") || (args[2].contains(sender.getName()) ||
                         (args[2].equals("12345")))) {
-                    sender.sendMessage(Component.text("La password è troppo debole!", Palette.RED));
+                    sender.sendMessage(Component.text(main.PASSWORD_NON_SICURA));
                     return true;
                 }
 
                 Integer lunghezzapw = args[2].length();
 
-                if (lunghezzapw < 5) {
-                    sender.sendMessage(Component.text("La password è troppo corta!", Palette.RED));
+                if (lunghezzapw < main.PW_LENGHT_MIN) {
+                    sender.sendMessage(Component.text(main.PASSWORD_CORTA));
                     return true;
                 }
 
-                if (lunghezzapw > 16) {
-                    sender.sendMessage(Component.text("La password è troppo lunga!", Palette.RED));
+                if (lunghezzapw > main.PW_LENGHT_MAX) {
+                    sender.sendMessage(Component.text(main.PASSWORD_LUNGA));
                     return true;
                 }
 
@@ -126,14 +127,15 @@ public class AdminauthCommand implements CommandExecutor {
             if (args[0].equalsIgnoreCase("unregister")) {
 
                 if (args.length != 2) {
-                    sender.sendMessage(Component.text("Utilizza /adminauth unregister <player>", Palette.RED));
+                    sender.sendMessage(Component.text(main.getConfig().getString("messages.usage-adminauth-unregister",
+                            "§cUtilizza /adminauth unregister <player>")));
                     return true;
                 }
 
                 OfflinePlayer target = Bukkit.getOfflinePlayer(args[1]);
 
                 if (!target.hasPlayedBefore()) {
-                    sender.sendMessage(Component.text("Il player non è mai entrato nel server!", Palette.RED));
+                    sender.sendMessage(Component.text(main.PLAYER_MAI_ENTRATO));
                     return true;
                 }
 
@@ -146,7 +148,8 @@ public class AdminauthCommand implements CommandExecutor {
                 }
 
                 if (playerpw == null) {
-                    sender.sendMessage(Component.text("Il player non si è mai autenticato!", Palette.RED));
+                    sender.sendMessage(Component.text(main.getConfig().getString("messages.player-never-authenticated",
+                            "§cIl player non si è mai autenticato!")));
                     return true;
                 }
 
@@ -174,14 +177,15 @@ public class AdminauthCommand implements CommandExecutor {
             if (args[0].equalsIgnoreCase("register")) {
 
                 if (args.length != 3) {
-                    sender.sendMessage(Component.text("Utilizza /adminauth register <player> <password>", Palette.RED));
+                    sender.sendMessage(Component.text(main.getConfig().getString("messages.usage-adminauth-register",
+                            "§cUtilizza /adminauth register <player> <password>")));
                     return true;
                 }
 
                 OfflinePlayer target = Bukkit.getOfflinePlayer(args[1]);
 
                 if (!target.hasPlayedBefore()) {
-                    sender.sendMessage(Component.text("Il player non è mai entrato nel server!", Palette.RED));
+                    sender.sendMessage(Component.text(main.PLAYER_MAI_ENTRATO));
                     return true;
                 }
 
@@ -195,19 +199,19 @@ public class AdminauthCommand implements CommandExecutor {
 
                 if (args[2].contains("ciao") || (args[2].contains(sender.getName()) ||
                         (args[2].equals("12345")))) {
-                    sender.sendMessage(Component.text("La password è troppo debole!", Palette.RED));
+                    sender.sendMessage(Component.text(main.PASSWORD_NON_SICURA));
                     return true;
                 }
 
                 Integer lunghezzapw = args[2].length();
 
-                if (lunghezzapw < 5) {
-                    sender.sendMessage(Component.text("La password è troppo corta!", Palette.RED));
+                if (lunghezzapw < main.PW_LENGHT_MIN) {
+                    sender.sendMessage(Component.text(main.PASSWORD_CORTA));
                     return true;
                 }
 
-                if (lunghezzapw > 16) {
-                    sender.sendMessage(Component.text("La password è troppo lunga!", Palette.RED));
+                if (lunghezzapw > main.PW_LENGHT_MAX) {
+                    sender.sendMessage(Component.text(main.PASSWORD_LUNGA));
                     return true;
                 }
 
@@ -232,14 +236,15 @@ public class AdminauthCommand implements CommandExecutor {
             if (args[0].equalsIgnoreCase("checkip")) {
 
                 if (args.length != 2) {
-                    sender.sendMessage(Component.text("Utilizza /adminauth checkip <player>", Palette.RED));
+                    sender.sendMessage(Component.text(main.getConfig().getString("messages.usage-adminauth-checkip",
+                            "§cUtilizza /adminauth checkip <player>")));
                     return true;
                 }
 
                 OfflinePlayer target = Bukkit.getOfflinePlayer(args[1]);
 
                 if (target == null || !target.hasPlayedBefore()) {
-                    sender.sendMessage(Component.text("Il player non è mai entrato nel server!", Palette.RED));
+                    sender.sendMessage(Component.text(main.PLAYER_MAI_ENTRATO));
                     return true;
                 }
 
@@ -264,7 +269,8 @@ public class AdminauthCommand implements CommandExecutor {
 
         }
 
-        sender.sendMessage(Component.text("Comando errato, utilizza /adminauth per informazioni", Palette.RED));
+        sender.sendMessage(Component.text(main.getConfig().getString("messages.usage-adminauth",
+                "§cComando errato, utilizza /adminauth per informazioni")));
         return true;
     }
 }

@@ -29,7 +29,7 @@ public class PlayerCommand implements Listener {
 
         if (!main.authenticated.contains(player.getUniqueId())) {
             e.setCancelled(true);
-            player.sendMessage(Component.text("Non sei autenticato, digita /login <password> o /register", Palette.RED));
+            player.sendMessage(Component.text(main.EVENT_NOT_AUTH));
             return;
         }
 

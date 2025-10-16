@@ -31,7 +31,8 @@ public class LoginCommand implements CommandExecutor {
         }
 
         if (args.length != 1) {
-            player.sendMessage(Component.text("Utilizza /login <password>", Palette.RED));
+            player.sendMessage(Component.text(main.getConfig().getString("messages.usage-login",
+                    "§cUtilizza /login <password>")));
             return true;
         }
 
@@ -44,17 +45,18 @@ public class LoginCommand implements CommandExecutor {
         }
 
         if (main.authenticated.contains(player.getUniqueId())) {
-            player.sendMessage(Component.text("Sei già autenticato!", Palette.RED));
+            player.sendMessage(Component.text(main.ALREADY_AUTHENTICATED));
             return true;
         }
 
         if (playerpassword == null) {
-            player.sendMessage(Component.text("Devi prima registrarti, utilizza /register", Palette.RED));
+            player.sendMessage(Component.text(main.NOT_REGISTERED));
             return true;
         }
 
         if (!PasswordUtils.checkPassword(args[0], playerpassword)) {
-            player.sendMessage(Component.text("Ti sei autenticato con successo!", Palette.GREEN));
+            player.sendMessage(Component.text(main.getConfig().getString("messages.success-login",
+                    "§aHai effettuato il login con successo!")));
             main.authenticated.add(player.getUniqueId());
             try {
                 db.updatePlayerAdress(player, player.getAddress().toString());
@@ -63,7 +65,7 @@ public class LoginCommand implements CommandExecutor {
             }
             return true;
         }
-        player.sendMessage(Component.text("La password è errata! Riprova.", Palette.RED));
+        player.sendMessage(Component.text(main.PASSWORD_SBAGLIATA));
         return true;
     }
 }
