@@ -54,7 +54,7 @@ public class LoginCommand implements CommandExecutor {
             return true;
         }
 
-        if (!PasswordUtils.checkPassword(args[0], playerpassword)) {
+        if (PasswordUtils.checkPassword(args[0], playerpassword)) {
             player.sendMessage(Component.text(main.getConfig().getString("messages.success-login",
                     "§aHai effettuato il login con successo!")));
             main.authenticated.add(player.getUniqueId());
