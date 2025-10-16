@@ -87,7 +87,7 @@ public class ChangepasswordCommand implements CommandExecutor {
             throw new RuntimeException(e);
         }
 
-        player.sendMessage(Component.text(main.getConfig().getString("success-changepassword",
+        player.sendMessage(Component.text(main.getConfig().getString("messages.success-changepassword",
                 "§aHai cambiato la password con successo.")));
         return true;
     }
