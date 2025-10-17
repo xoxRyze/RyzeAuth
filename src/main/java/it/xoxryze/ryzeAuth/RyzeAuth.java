@@ -59,6 +59,7 @@ public class RyzeAuth extends JavaPlugin {
         getCommand("unregister").setExecutor(new UnregisterCommand(this, db));
         getCommand("adminauth").setExecutor(new AdminauthCommand(this, db));
         getCommand("adminauth").setTabCompleter(new AdminauthTabCompleter());
+        getCommand("unlogin").setExecutor(new UnloginCommand(this));
         getServer().getPluginManager().registerEvents(new PlayerQuit(this, db), this);
         getServer().getPluginManager().registerEvents(new PlayerMove(this), this);
         getServer().getPluginManager().registerEvents(new PlayerChat(this), this);

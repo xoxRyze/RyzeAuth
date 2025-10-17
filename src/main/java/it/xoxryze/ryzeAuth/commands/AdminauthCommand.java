@@ -4,6 +4,7 @@ import it.xoxryze.ryzeAuth.RyzeAuth;
 import it.xoxryze.ryzeAuth.database.DatabaseManager;
 import it.xoxryze.ryzeAuth.utils.Palette;
 import it.xoxryze.ryzeAuth.utils.PasswordUtils;
+import it.xoxryze.ryzeAuth.utils.Permission;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.HoverEvent;
 import org.bukkit.Bukkit;
@@ -58,7 +59,7 @@ public class AdminauthCommand implements CommandExecutor {
         }
 
         if (sender instanceof Player player) {
-            if (!player.hasPermission("ryzeauth.command.adminauth")) {
+            if (!Permission.hasPermission(player, "adminauth")) {
                 player.sendMessage(Component.text(main.NO_PERMISSION));
                 return true;
             }
@@ -68,6 +69,13 @@ public class AdminauthCommand implements CommandExecutor {
                 args[0].equalsIgnoreCase("register") || args[0].equalsIgnoreCase("checkip")) {
 
             if (args[0].equalsIgnoreCase("changepassword")) {
+
+                if (sender instanceof Player player) {
+                    if (!Permission.hasPermission(player, "adminauth.changepassword")) {
+                        player.sendMessage(Component.text(main.NO_PERMISSION));
+                        return true;
+                    }
+                }
 
                 if (args.length != 3) {
                     sender.sendMessage(Component.text(main.getConfig().getString("messages.usage-adminauth-changepassword",
@@ -126,6 +134,13 @@ public class AdminauthCommand implements CommandExecutor {
 
             if (args[0].equalsIgnoreCase("unregister")) {
 
+                if (sender instanceof Player player) {
+                    if (!Permission.hasPermission(player, "adminauth.unregister")) {
+                        player.sendMessage(Component.text(main.NO_PERMISSION));
+                        return true;
+                    }
+                }
+
                 if (args.length != 2) {
                     sender.sendMessage(Component.text(main.getConfig().getString("messages.usage-adminauth-unregister",
                             "§cUtilizza /adminauth unregister <player>")));
@@ -175,6 +190,13 @@ public class AdminauthCommand implements CommandExecutor {
             }
 
             if (args[0].equalsIgnoreCase("register")) {
+
+                if (sender instanceof Player player) {
+                    if (!Permission.hasPermission(player, "adminauth.register")) {
+                        player.sendMessage(Component.text(main.NO_PERMISSION));
+                        return true;
+                    }
+                }
 
                 if (args.length != 3) {
                     sender.sendMessage(Component.text(main.getConfig().getString("messages.usage-adminauth-register",
@@ -234,6 +256,13 @@ public class AdminauthCommand implements CommandExecutor {
             }
 
             if (args[0].equalsIgnoreCase("checkip")) {
+
+                if (sender instanceof Player player) {
+                    if (!Permission.hasPermission(player, "adminauth.checkip")) {
+                        player.sendMessage(Component.text(main.NO_PERMISSION));
+                        return true;
+                    }
+                }
 
                 if (args.length != 2) {
                     sender.sendMessage(Component.text(main.getConfig().getString("messages.usage-adminauth-checkip",

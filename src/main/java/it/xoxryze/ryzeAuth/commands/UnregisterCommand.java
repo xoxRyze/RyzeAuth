@@ -4,6 +4,7 @@ import it.xoxryze.ryzeAuth.RyzeAuth;
 import it.xoxryze.ryzeAuth.database.DatabaseManager;
 import it.xoxryze.ryzeAuth.utils.Palette;
 import it.xoxryze.ryzeAuth.utils.PasswordUtils;
+import it.xoxryze.ryzeAuth.utils.Permission;
 import net.kyori.adventure.text.Component;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -27,6 +28,11 @@ public class UnregisterCommand implements CommandExecutor {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String @NotNull [] args) {
 
         if (!(sender instanceof Player player)) {
+            return true;
+        }
+
+        if (!Permission.hasPermission(player, "unregister")) {
+            player.sendMessage(Component.text(main.NO_PERMISSION));
             return true;
         }
 

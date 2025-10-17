@@ -9,5 +9,6 @@ commands:
   login:
   changepassword:
   unregister:
+  unlogin:
   adminauth:
     permission: ryzeauth.command.adminauth

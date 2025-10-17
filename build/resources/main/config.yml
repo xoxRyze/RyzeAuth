@@ -10,6 +10,7 @@ messages:
   not-registered: "§cDevi essere registrato per poterlo fare!"
   success-unregistered: "§aTi sei unregistrato con successo!"
   player-never-join: "§cIl player non è mai entrato nel server!"
+  success-unlogin: "§aHai effettuato l'unlogin con successo."
 
   success-login: "§aHai effettuato il login con successo!"
   already-authenticated: "§cHai già effettuato l'autenticazione!"
@@ -28,9 +29,21 @@ messages:
   usage-register: "§cUtilizza /register <password> <password>"
   usage-login: "§cUtilizza /login <password>"
   usage-unregister: "§cUtilizza /unregister <password>"
+  usage-unlogin: "§cUtilizza /unlogin"
   usage-changepassword: "§cUtilizza /changepassword <password> <nuovapassword>"
   usage-adminauth: "§cComando errato, utilizza /adminauth per informazioni"
   usage-adminauth-checkip: "§cUtilizza /adminauth checkip <player>"
   usage-adminauth-register: "§cUtilizza /adminauth register <player> <password>"
   usage-adminauth-unregister: "§cUtilizza /adminauth unregister <player>"
   usage-adminauth-changepassword: "§cUtilizza /adminauth changepassword <player> <password>"
+
+  # permissions #
+  # /unlogin -> ryzeauth.command.unlogin #
+  # /unlogin -> ryzeauth.command.unregister #
+  # /changepassword -> ryzeauth.command.changepassword #
+  # /adminauth -> ryzeauth.command.adminauth #
+  # /adminauth checkip -> ryzeauth.command.adminauth.checkip #
+  # /adminauth unregister -> ryzeauth.command.adminauth.unregister #
+  # /adminauth changepassword -> ryzeauth.command.adminauth.changepassword #
+  # /adminauth register -> ryzeauth.command.adminauth.register #
+  # tabcomplete -> ryzeauth.command.tabcomplete #

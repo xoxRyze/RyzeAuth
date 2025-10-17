@@ -4,6 +4,7 @@ import it.xoxryze.ryzeAuth.RyzeAuth;
 import it.xoxryze.ryzeAuth.database.DatabaseManager;
 import it.xoxryze.ryzeAuth.utils.Palette;
 import it.xoxryze.ryzeAuth.utils.PasswordUtils;
+import it.xoxryze.ryzeAuth.utils.Permission;
 import net.kyori.adventure.text.Component;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -30,8 +31,8 @@ public class ChangepasswordCommand implements CommandExecutor {
             return true;
         }
 
-        if (!player.hasPermission("ryzeauth.changepassword")) {
-            player.sendMessage(Component.text("Non hai il permesso per poterlo fare!", Palette.RED));
+        if (!Permission.hasPermission(player, "changepassword")) {
+            player.sendMessage(Component.text(main.NO_PERMISSION));
             return true;
         }
 
