@@ -9,6 +9,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerCommandSendEvent;
 
+import static it.xoxryze.ryzeAuth.managers.ConfigManager.EVENT_NOT_AUTH;
+
 public class PlayerChat implements Listener {
 
     private final RyzeAuth main;
@@ -21,10 +23,10 @@ public class PlayerChat implements Listener {
     public void onPlayerChat (PlayerChatEvent e) {
         Player player = e.getPlayer();
 
-        if (!main.authenticated.contains(player.getUniqueId())) {
+        if (!main.getAuthenticated().contains(player.getUniqueId())) {
             e.setCancelled(true);
 
-            player.sendMessage(Component.text(main.EVENT_NOT_AUTH));
+            player.sendMessage(Component.text(EVENT_NOT_AUTH));
             return;
         }
 

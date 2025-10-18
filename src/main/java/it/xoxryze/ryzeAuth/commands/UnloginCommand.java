@@ -9,6 +9,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+import static it.xoxryze.ryzeAuth.managers.ConfigManager.NOT_AUTHENTICATED;
+import static it.xoxryze.ryzeAuth.managers.ConfigManager.NO_PERMISSION;
+
 public class UnloginCommand implements CommandExecutor {
 
     private final RyzeAuth main;
@@ -25,7 +28,7 @@ public class UnloginCommand implements CommandExecutor {
         }
 
         if (!Permission.hasPermission(player, "unlogin")) {
-            player.sendMessage(Component.text(main.NO_PERMISSION));
+            player.sendMessage(Component.text(NO_PERMISSION));
             return true;
         }
 
@@ -35,14 +38,14 @@ public class UnloginCommand implements CommandExecutor {
             return true;
         }
 
-        if (!main.authenticated.contains(player.getUniqueId())) {
-            player.sendMessage(main.NOT_AUTHENTICATED);
+        if (!main.getAuthenticated().contains(player.getUniqueId())) {
+            player.sendMessage(NOT_AUTHENTICATED);
             return true;
         }
 
         player.sendMessage(Component.text(main.getConfig().getString("messages.success.unlogin",
                 "§aHai effettuato l'unlogin con successo.")));
-        main.authenticated.remove(player.getUniqueId());
+        main.getAuthenticated().remove(player.getUniqueId());
         return true;
     }
 }

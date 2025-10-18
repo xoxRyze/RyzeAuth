@@ -9,6 +9,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 
+import static it.xoxryze.ryzeAuth.managers.ConfigManager.EVENT_NOT_AUTH;
+
 public class PlayerMove implements Listener {
 
     private final RyzeAuth main;
@@ -22,7 +24,7 @@ public class PlayerMove implements Listener {
 
         Player player = e.getPlayer();
 
-        if (!main.authenticated.contains(player.getUniqueId())) {
+        if (!main.getAuthenticated().contains(player.getUniqueId())) {
             e.setCancelled(true);
             player.sendMessage(Component.text("Non sei autenticato, digita /login <password>", Palette.RED));
             return;
@@ -35,9 +37,9 @@ public class PlayerMove implements Listener {
 
         Player player = e.getPlayer();
 
-        if (!main.authenticated.contains(player.getUniqueId())) {
+        if (!main.getAuthenticated().contains(player.getUniqueId())) {
             e.setCancelled(true);
-            player.sendMessage(Component.text(main.EVENT_NOT_AUTH));
+            player.sendMessage(Component.text(EVENT_NOT_AUTH));
             return;
         }
 

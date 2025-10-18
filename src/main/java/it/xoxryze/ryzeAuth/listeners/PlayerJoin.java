@@ -1,8 +1,7 @@
 package it.xoxryze.ryzeAuth.listeners;
 
 import it.xoxryze.ryzeAuth.RyzeAuth;
-import it.xoxryze.ryzeAuth.database.DatabaseManager;
-import org.bukkit.ChatColor;
+import it.xoxryze.ryzeAuth.database.tables.AuthTable;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -11,10 +10,10 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import java.sql.SQLException;
 
 public class PlayerJoin implements Listener {
-    private final DatabaseManager db;
+    private final AuthTable db;
     private final RyzeAuth main;
 
-    public PlayerJoin(DatabaseManager db, RyzeAuth main) {
+    public PlayerJoin(AuthTable db, RyzeAuth main) {
         this.db = db;
         this.main = main;
     }
@@ -22,22 +21,23 @@ public class PlayerJoin implements Listener {
     @EventHandler
     public void onPlayerJoin (PlayerJoinEvent e) throws SQLException {
         Player player = e.getPlayer();
-
-        String registered, lastadress;
+        String registered, lastaddress;
         registered = "Yes";
-        lastadress = db.getPlayerAdress(player);
 
-        if (lastadress == null) {
-            lastadress = "Non-existent";
+        lastaddress = String.valueOf(db.getPlayerAddress(player));
+        if (lastaddress == null) {
+            lastaddress = "Non-existent";
             registered = "No";
         }
+
+        player.getMetadata("");
 
         main.getLogger().info(" ");
         main.getLogger().info("PLAYER JOIN");
         main.getLogger().info("Username: " + player.getName());
         main.getLogger().info("UuId: " + player.getUniqueId());
-        main.getLogger().info("Adress: " + player.getAddress());
-        main.getLogger().info("Last Adress: " + lastadress);
+        main.getLogger().info("Address: " + player.getAddress());
+        main.getLogger().info("Last Address: " + lastaddress);
         main.getLogger().info("Registered: " + registered);
         main.getLogger().info(" ");
         return;

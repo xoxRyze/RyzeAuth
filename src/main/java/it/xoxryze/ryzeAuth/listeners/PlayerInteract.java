@@ -8,6 +8,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
 
+import static it.xoxryze.ryzeAuth.managers.ConfigManager.EVENT_NOT_AUTH;
+
 public class PlayerInteract implements Listener {
     private final RyzeAuth main;
 
@@ -20,9 +22,9 @@ public class PlayerInteract implements Listener {
 
         Player player = e.getPlayer();
 
-        if (!main.authenticated.contains(player.getUniqueId())) {
+        if (!main.getAuthenticated().contains(player.getUniqueId())) {
             e.setCancelled(true);
-            player.sendMessage(Component.text(main.EVENT_NOT_AUTH));
+            player.sendMessage(Component.text(EVENT_NOT_AUTH));
             return;
         }
 

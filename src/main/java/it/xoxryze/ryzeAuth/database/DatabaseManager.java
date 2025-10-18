@@ -1,97 +1,46 @@
 package it.xoxryze.ryzeAuth.database;
 
-import org.bukkit.OfflinePlayer;
+import it.xoxryze.ryzeAuth.RyzeAuth;
+import it.xoxryze.ryzeAuth.utils.LogUtils;
 
-import java.sql.*;
+import java.io.File;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 public class DatabaseManager {
 
-    private final Connection connection;
+    private File dbFile;
 
-    public DatabaseManager(String path) throws SQLException {
-        connection = DriverManager.getConnection("jdbc:sqlite:" + path);
+    public DatabaseManager(RyzeAuth main) {
+        createFile(main.getDataFolder().getAbsolutePath());
+    }
+
+    private void createFile(String path) {
+        File dataFolder = new File(path);
+        if (!dataFolder.exists()) dataFolder.mkdirs();
+
+        dbFile = new File(dataFolder, "ryzeauth.db");
+        if (!dbFile.exists()) {
+            try {
+                dbFile.createNewFile();
+            } catch (IOException e) {
+                LogUtils.logError(e, "Unable to create database file");
+            }
+        }
+    }
+
+    public Connection getConnection() throws SQLException {
+        Connection connection = DriverManager.getConnection("jdbc:sqlite:" + dbFile.getAbsolutePath());
         try (Statement statement = connection.createStatement()) {
-            statement.execute("""
-                   CREATE TABLE IF NOT EXISTS players (
-                   uuid TEXT PRIMARY KEY,
-                   nickname TEXT NOT NULL,
-                   password TEXT,
-                   ip TEXT)
-                   """);
-        }
-    }
-
-    public void closeConnection() throws SQLException {
-        if (connection != null & !connection.isClosed()) {
-            connection.close();
-        }
-    }
-
-    public void addPlayer(OfflinePlayer p) throws SQLException {
-        try (PreparedStatement preparedStatement = connection.prepareStatement(
-                "INSERT INTO players (uuid, nickname) VALUES (?, ?)")) {
-            preparedStatement.setString(1, p.getUniqueId().toString());
-            preparedStatement.setString(2, p.getName());
-            preparedStatement.executeUpdate();
-        }
-    }
-
-    public boolean playerExists(OfflinePlayer player) throws SQLException {
-        try (PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM players WHERE uuid = ?")) {
-            preparedStatement.setString(1, player.getUniqueId().toString());
-            ResultSet resultSet = preparedStatement.executeQuery();
-            return resultSet.next();
-        }
-    }
-
-    public String getPlayerPassword (OfflinePlayer player) throws SQLException {
-        try (PreparedStatement preparedStatement = connection.prepareStatement("SELECT password FROM players WHERE uuid = ?")) {
-            preparedStatement.setString(1, player.getUniqueId().toString());
-            ResultSet resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()) {
-                return resultSet.getString("password");
-            } else {
-                return null;
-            }
-        }
-    }
-
-    public String getPlayerAdress (OfflinePlayer player) throws SQLException {
-        try (PreparedStatement preparedStatement = connection.prepareStatement("SELECT ip FROM players WHERE uuid = ?")) {
-            preparedStatement.setString(1, player.getUniqueId().toString());
-            ResultSet resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()) {
-                return resultSet.getString("ip");
-            } else {
-                return null;
-            }
-        }
-    }
-
-    public void updatePlayerAdress (OfflinePlayer player, String ip) throws SQLException{
-
-        if (!playerExists(player)) {
-            addPlayer(player);
+            statement.execute("PRAGMA foreign_keys = ON;");
+        } catch (SQLException e) {
+            LogUtils.logError(e, "Failed to enable foreign keys");
         }
 
-        try (PreparedStatement preparedStatement = connection.prepareStatement("UPDATE players SET ip = ? WHERE uuid = ?")) {
-            preparedStatement.setString(1, ip);
-            preparedStatement.setString(2, player.getUniqueId().toString());
-            preparedStatement.executeUpdate();
-        }
-    }
-
-    public void updatePlayerPassword(OfflinePlayer player, String password) throws SQLException{
-
-        if (!playerExists(player)) {
-            addPlayer(player);
-        }
-
-        try (PreparedStatement preparedStatement = connection.prepareStatement("UPDATE players SET password = ? WHERE uuid = ?")) {
-            preparedStatement.setString(1, password);
-            preparedStatement.setString(2, player.getUniqueId().toString());
-            preparedStatement.executeUpdate();
-        }
+        return connection;
     }
 
 }

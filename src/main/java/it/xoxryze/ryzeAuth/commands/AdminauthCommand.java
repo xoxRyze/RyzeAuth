@@ -1,7 +1,7 @@
 package it.xoxryze.ryzeAuth.commands;
 
 import it.xoxryze.ryzeAuth.RyzeAuth;
-import it.xoxryze.ryzeAuth.database.DatabaseManager;
+import it.xoxryze.ryzeAuth.database.tables.AuthTable;
 import it.xoxryze.ryzeAuth.utils.Palette;
 import it.xoxryze.ryzeAuth.utils.PasswordUtils;
 import it.xoxryze.ryzeAuth.utils.Permission;
@@ -17,12 +17,14 @@ import org.jetbrains.annotations.NotNull;
 
 import java.sql.SQLException;
 
+import static it.xoxryze.ryzeAuth.managers.ConfigManager.*;
+
 public class AdminauthCommand implements CommandExecutor {
 
     private final RyzeAuth main;
-    private final DatabaseManager db;
+    private final AuthTable db;
 
-    public AdminauthCommand(RyzeAuth main, DatabaseManager db) {
+    public AdminauthCommand(RyzeAuth main, AuthTable db) {
         this.main = main;
         this.db = db;
     }
@@ -60,7 +62,7 @@ public class AdminauthCommand implements CommandExecutor {
 
         if (sender instanceof Player player) {
             if (!Permission.hasPermission(player, "adminauth")) {
-                player.sendMessage(Component.text(main.NO_PERMISSION));
+                player.sendMessage(Component.text(NO_PERMISSION));
                 return true;
             }
         }
@@ -72,7 +74,7 @@ public class AdminauthCommand implements CommandExecutor {
 
                 if (sender instanceof Player player) {
                     if (!Permission.hasPermission(player, "adminauth.changepassword")) {
-                        player.sendMessage(Component.text(main.NO_PERMISSION));
+                        player.sendMessage(Component.text(NO_PERMISSION));
                         return true;
                     }
                 }
@@ -86,16 +88,11 @@ public class AdminauthCommand implements CommandExecutor {
                 OfflinePlayer target = Bukkit.getOfflinePlayer(args[1]);
 
                 if (!target.hasPlayedBefore()) {
-                    sender.sendMessage(Component.text(main.PLAYER_MAI_ENTRATO));
+                    sender.sendMessage(Component.text(PLAYER_MAI_ENTRATO));
                     return true;
                 }
 
-                String targetpw;
-                try {
-                    targetpw = db.getPlayerPassword(target);
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
-                }
+                String targetpw = String.valueOf(db.getPlayerPassword(target));
 
                 if (targetpw == null) {
                     sender.sendMessage(Component.text(main.getConfig().getString("messages.player-never-authenticated",
@@ -105,28 +102,24 @@ public class AdminauthCommand implements CommandExecutor {
 
                 if (args[2].contains("ciao") || (args[2].contains(sender.getName()) ||
                         (args[2].equals("12345")))) {
-                    sender.sendMessage(Component.text(main.PASSWORD_NON_SICURA));
+                    sender.sendMessage(Component.text(PASSWORD_NON_SICURA));
                     return true;
                 }
 
                 Integer lunghezzapw = args[2].length();
 
-                if (lunghezzapw < main.PW_LENGHT_MIN) {
-                    sender.sendMessage(Component.text(main.PASSWORD_CORTA));
+                if (lunghezzapw < PW_LENGHT_MIN) {
+                    sender.sendMessage(Component.text(PASSWORD_CORTA));
                     return true;
                 }
 
-                if (lunghezzapw > main.PW_LENGHT_MAX) {
-                    sender.sendMessage(Component.text(main.PASSWORD_LUNGA));
+                if (lunghezzapw > PW_LENGHT_MAX) {
+                    sender.sendMessage(Component.text(PASSWORD_LUNGA));
                     return true;
                 }
 
-                try {
-                    String hashed = PasswordUtils.hashPassword(args[2]);
-                    db.updatePlayerPassword(target, hashed);
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
-                }
+                String hashed = PasswordUtils.hashPassword(args[2]);
+                db.updatePlayerPassword(target, hashed);
                 sender.sendMessage(Component.text("Hai cambiato la password di §a" + target.getName(),
                         Palette.GREEN));
                 return true;
@@ -136,7 +129,7 @@ public class AdminauthCommand implements CommandExecutor {
 
                 if (sender instanceof Player player) {
                     if (!Permission.hasPermission(player, "adminauth.unregister")) {
-                        player.sendMessage(Component.text(main.NO_PERMISSION));
+                        player.sendMessage(Component.text(NO_PERMISSION));
                         return true;
                     }
                 }
@@ -150,17 +143,11 @@ public class AdminauthCommand implements CommandExecutor {
                 OfflinePlayer target = Bukkit.getOfflinePlayer(args[1]);
 
                 if (!target.hasPlayedBefore()) {
-                    sender.sendMessage(Component.text(main.PLAYER_MAI_ENTRATO));
+                    sender.sendMessage(Component.text(PLAYER_MAI_ENTRATO));
                     return true;
                 }
 
-                String playerpw;
-
-                try {
-                    playerpw = db.getPlayerPassword(target);
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
-                }
+                String playerpw = String.valueOf(db.getPlayerPassword(target));
 
                 if (playerpw == null) {
                     sender.sendMessage(Component.text(main.getConfig().getString("messages.player-never-authenticated",
@@ -168,23 +155,20 @@ public class AdminauthCommand implements CommandExecutor {
                     return true;
                 }
 
-                try {
-                    db.updatePlayerPassword(target, null);
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
-                }
+
+                db.updatePlayerPassword(target, null);
                 sender.sendMessage(Component.text("Hai unregistrato con successo §a" + target.getName(),
                         Palette.GREEN));
                 if (target.isOnline()) {
                     target = (Player) target;
 
-                    if (main.authenticated.contains(target.getUniqueId())) {
+                    if (main.getAuthenticated().contains(target.getUniqueId())) {
                         ((Player) target).kick(Component.text("Sei stato uregistrato forzatamente da uno Staffer", Palette.RED));
-                        main.authenticated.remove(target.getUniqueId());
+                        main.getAuthenticated().remove(target.getUniqueId());
                         return true;
                     }
 
-                    main.authenticated.remove(target.getUniqueId());
+                    main.getAuthenticated().remove(target.getUniqueId());
                 }
                 return true;
             }
@@ -193,7 +177,7 @@ public class AdminauthCommand implements CommandExecutor {
 
                 if (sender instanceof Player player) {
                     if (!Permission.hasPermission(player, "adminauth.register")) {
-                        player.sendMessage(Component.text(main.NO_PERMISSION));
+                        player.sendMessage(Component.text(NO_PERMISSION));
                         return true;
                     }
                 }
@@ -207,47 +191,37 @@ public class AdminauthCommand implements CommandExecutor {
                 OfflinePlayer target = Bukkit.getOfflinePlayer(args[1]);
 
                 if (!target.hasPlayedBefore()) {
-                    sender.sendMessage(Component.text(main.PLAYER_MAI_ENTRATO));
+                    sender.sendMessage(Component.text(PLAYER_MAI_ENTRATO));
                     return true;
                 }
 
-                String playerpw;
-
-                try {
-                    playerpw = db.getPlayerPassword(target);
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
-                }
+                String playerpw = String.valueOf(db.getPlayerPassword(target));
 
                 if (args[2].contains("ciao") || (args[2].contains(sender.getName()) ||
                         (args[2].equals("12345")))) {
-                    sender.sendMessage(Component.text(main.PASSWORD_NON_SICURA));
+                    sender.sendMessage(Component.text(PASSWORD_NON_SICURA));
                     return true;
                 }
 
                 Integer lunghezzapw = args[2].length();
 
-                if (lunghezzapw < main.PW_LENGHT_MIN) {
-                    sender.sendMessage(Component.text(main.PASSWORD_CORTA));
+                if (lunghezzapw < PW_LENGHT_MIN) {
+                    sender.sendMessage(Component.text(PASSWORD_CORTA));
                     return true;
                 }
 
-                if (lunghezzapw > main.PW_LENGHT_MAX) {
-                    sender.sendMessage(Component.text(main.PASSWORD_LUNGA));
+                if (lunghezzapw > PW_LENGHT_MAX) {
+                    sender.sendMessage(Component.text(PASSWORD_LUNGA));
                     return true;
                 }
 
-                try {
-                    String hashed = PasswordUtils.hashPassword(args[2]);
-                    db.updatePlayerPassword(target, hashed);
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
-                }
+                String hashed = PasswordUtils.hashPassword(args[2]);
+                db.updatePlayerPassword(target, hashed);
                 sender.sendMessage(Component.text("Hai registrato con successo §a" + target.getName(), Palette.GREEN));
 
                 if (target.isOnline()) {
                     target = (Player) target;
-                    main.authenticated.add(target.getUniqueId());
+                    main.getAuthenticated().add(target.getUniqueId());
                     ((Player) target).sendMessage(Component.text("Sei stato registrato forzatamente da uno Staffer"
                             , Palette.GREEN));
                 }
@@ -259,7 +233,7 @@ public class AdminauthCommand implements CommandExecutor {
 
                 if (sender instanceof Player player) {
                     if (!Permission.hasPermission(player, "adminauth.checkip")) {
-                        player.sendMessage(Component.text(main.NO_PERMISSION));
+                        player.sendMessage(Component.text(NO_PERMISSION));
                         return true;
                     }
                 }
@@ -273,16 +247,11 @@ public class AdminauthCommand implements CommandExecutor {
                 OfflinePlayer target = Bukkit.getOfflinePlayer(args[1]);
 
                 if (target == null || !target.hasPlayedBefore()) {
-                    sender.sendMessage(Component.text(main.PLAYER_MAI_ENTRATO));
+                    sender.sendMessage(Component.text(PLAYER_MAI_ENTRATO));
                     return true;
                 }
 
-                String playerip;
-                try {
-                    playerip = db.getPlayerAdress(target);
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
-                }
+                String playerip = String.valueOf(db.getPlayerAddress(target));
 
                 String status = "§cOffline";
 
@@ -291,7 +260,7 @@ public class AdminauthCommand implements CommandExecutor {
                 }
 
                 sender.sendMessage(Component.text("\nPlayer: §f" + target.getName() + "\nStatus: §f" + status
-                        + "\n§rLast Adress: §f" + playerip + "\n", Palette.AQUA));
+                        + "\n§rLast Address: §f" + playerip + "\n", Palette.AQUA));
 
                 return true;
             }

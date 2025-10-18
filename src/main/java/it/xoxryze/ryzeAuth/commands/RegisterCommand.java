@@ -1,8 +1,7 @@
 package it.xoxryze.ryzeAuth.commands;
 
 import it.xoxryze.ryzeAuth.RyzeAuth;
-import it.xoxryze.ryzeAuth.database.DatabaseManager;
-import it.xoxryze.ryzeAuth.utils.Palette;
+import it.xoxryze.ryzeAuth.database.tables.AuthTable;
 import it.xoxryze.ryzeAuth.utils.PasswordUtils;
 import net.kyori.adventure.text.Component;
 import org.bukkit.command.Command;
@@ -13,12 +12,14 @@ import org.jetbrains.annotations.NotNull;
 
 import java.sql.SQLException;
 
+import static it.xoxryze.ryzeAuth.managers.ConfigManager.*;
+
 public class RegisterCommand implements CommandExecutor {
 
-    private final DatabaseManager db;
+    private final AuthTable db;
     private final RyzeAuth main;
 
-    public RegisterCommand(DatabaseManager db, RyzeAuth main) {
+    public RegisterCommand(AuthTable db, RyzeAuth main) {
         this.db = db;
         this.main = main;
     }
@@ -36,59 +37,49 @@ public class RegisterCommand implements CommandExecutor {
             return true;
         }
 
-        String playerpassword;
+        String playerpassword = String.valueOf(db.getPlayerPassword(player));
 
-        try {
-            playerpassword = db.getPlayerPassword(player);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-
-        if (main.authenticated.contains(player.getUniqueId())) {
-            player.sendMessage(Component.text(main.ALREADY_AUTHENTICATED));
+        if (main.getAuthenticated().contains(player.getUniqueId())) {
+            player.sendMessage(Component.text(ALREADY_AUTHENTICATED));
             return true;
         }
 
         if (playerpassword != null) {
             player.sendMessage(Component.text(
-                    main.ALREADY_REGISTRED
+                    ALREADY_REGISTRED
             ));
             return true;
         }
 
         if (!args[0].equals(args[1])) {
-            player.sendMessage(Component.text(main.PASSWORD_NON_COINCIDE));
+            player.sendMessage(Component.text(PASSWORD_NON_COINCIDE));
             return true;
         }
 
         Integer lunghezzapw = args[0].length();
 
-        if (lunghezzapw < main.PW_LENGHT_MIN) {
-            player.sendMessage(Component.text(main.PASSWORD_CORTA));
+        if (lunghezzapw < PW_LENGHT_MIN) {
+            player.sendMessage(Component.text(PASSWORD_CORTA));
             return true;
         }
 
-        if (lunghezzapw > main.PW_LENGHT_MAX) {
-            player.sendMessage(Component.text(main.PASSWORD_LUNGA));
+        if (lunghezzapw > PW_LENGHT_MAX) {
+            player.sendMessage(Component.text(PASSWORD_LUNGA));
             return true;
         }
 
         if (args[0].contains("ciao") || args[0].contains(player.getName()) || args[0].equals("12345")) {
-            player.sendMessage(Component.text(main.PASSWORD_NON_SICURA));
+            player.sendMessage(Component.text(PASSWORD_NON_SICURA));
             return true;
         }
 
-        try {
-            db.updatePlayerPassword(player, PasswordUtils.hashPassword(args[0]));
-            db.updatePlayerAdress(player, player.getAddress().toString());
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        db.updatePlayerPassword(player, PasswordUtils.hashPassword(args[0]));
+        db.updatePlayerAddress(player, player.getAddress().toString());
         String registrated = main.getConfig().getString("messages.registrazione-compeltata",
                 "§aHai effettuato la registrazione con successo!");
         player.sendMessage(Component.text(
                 registrated));
-        main.authenticated.add(player.getUniqueId());
+        main.getAuthenticated().add(player.getUniqueId());
         return true;
     }
 }

@@ -1,8 +1,7 @@
 package it.xoxryze.ryzeAuth.commands;
 
 import it.xoxryze.ryzeAuth.RyzeAuth;
-import it.xoxryze.ryzeAuth.database.DatabaseManager;
-import it.xoxryze.ryzeAuth.utils.Palette;
+import it.xoxryze.ryzeAuth.database.tables.AuthTable;
 import it.xoxryze.ryzeAuth.utils.PasswordUtils;
 import net.kyori.adventure.text.Component;
 import org.bukkit.command.Command;
@@ -13,12 +12,14 @@ import org.jetbrains.annotations.NotNull;
 
 import java.sql.SQLException;
 
+import static it.xoxryze.ryzeAuth.managers.ConfigManager.*;
+
 public class LoginCommand implements CommandExecutor {
 
-    private final DatabaseManager db;
+    private final AuthTable db;
     private final RyzeAuth main;
 
-    public LoginCommand(DatabaseManager db, RyzeAuth main) {
+    public LoginCommand(AuthTable db, RyzeAuth main) {
         this.db = db;
         this.main = main;
     }
@@ -36,36 +37,27 @@ public class LoginCommand implements CommandExecutor {
             return true;
         }
 
-        String playerpassword;
+        String playerpassword = String.valueOf(db.getPlayerPassword(player));
 
-        try {
-            playerpassword = db.getPlayerPassword(player);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-
-        if (main.authenticated.contains(player.getUniqueId())) {
-            player.sendMessage(Component.text(main.ALREADY_AUTHENTICATED));
+        if (main.getAuthenticated().contains(player.getUniqueId())) {
+            player.sendMessage(Component.text(ALREADY_AUTHENTICATED));
             return true;
         }
 
         if (playerpassword == null) {
-            player.sendMessage(Component.text(main.NOT_REGISTERED));
+            player.sendMessage(Component.text(NOT_REGISTERED));
             return true;
         }
 
         if (PasswordUtils.checkPassword(args[0], playerpassword)) {
             player.sendMessage(Component.text(main.getConfig().getString("messages.success-login",
                     "§aHai effettuato il login con successo!")));
-            main.authenticated.add(player.getUniqueId());
-            try {
-                db.updatePlayerAdress(player, player.getAddress().toString());
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
+            main.getAuthenticated().add(player.getUniqueId());
+            db.updatePlayerAddress(player, player.getAddress().toString());
+
             return true;
         }
-        player.sendMessage(Component.text(main.PASSWORD_SBAGLIATA));
+        player.sendMessage(Component.text(PASSWORD_SBAGLIATA));
         return true;
     }
 }

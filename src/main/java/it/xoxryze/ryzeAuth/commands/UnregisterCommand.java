@@ -1,8 +1,7 @@
 package it.xoxryze.ryzeAuth.commands;
 
 import it.xoxryze.ryzeAuth.RyzeAuth;
-import it.xoxryze.ryzeAuth.database.DatabaseManager;
-import it.xoxryze.ryzeAuth.utils.Palette;
+import it.xoxryze.ryzeAuth.database.tables.AuthTable;
 import it.xoxryze.ryzeAuth.utils.PasswordUtils;
 import it.xoxryze.ryzeAuth.utils.Permission;
 import net.kyori.adventure.text.Component;
@@ -14,12 +13,14 @@ import org.jetbrains.annotations.NotNull;
 
 import java.sql.SQLException;
 
+import static it.xoxryze.ryzeAuth.managers.ConfigManager.*;
+
 public class UnregisterCommand implements CommandExecutor {
 
     private final RyzeAuth main;
-    private final DatabaseManager db;
+    private final AuthTable db;
 
-    public UnregisterCommand(RyzeAuth main, DatabaseManager db) {
+    public UnregisterCommand(RyzeAuth main, AuthTable db) {
         this.main = main;
         this.db = db;
     }
@@ -32,7 +33,7 @@ public class UnregisterCommand implements CommandExecutor {
         }
 
         if (!Permission.hasPermission(player, "unregister")) {
-            player.sendMessage(Component.text(main.NO_PERMISSION));
+            player.sendMessage(Component.text(NO_PERMISSION));
             return true;
         }
 
@@ -44,33 +45,25 @@ public class UnregisterCommand implements CommandExecutor {
 
         String playerpw;
 
-        try {
-            playerpw = db.getPlayerPassword(player);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        playerpw = String.valueOf(db.getPlayerPassword(player));
 
         if (playerpw == null) {
-            player.sendMessage(Component.text(main.NOT_REGISTERED));
+            player.sendMessage(Component.text(NOT_REGISTERED));
             return true;
         }
 
-        if (main.authenticated.contains(player.getUniqueId())) {
+        if (main.getAuthenticated().contains(player.getUniqueId())) {
             if (!PasswordUtils.checkPassword(args[0], playerpw)) {
-                player.sendMessage(Component.text(main.PASSWORD_SBAGLIATA));
+                player.sendMessage(Component.text(PASSWORD_SBAGLIATA));
                 return true;
             }
-            try {
-                db.updatePlayerPassword(player, null);
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-            main.authenticated.remove(player.getUniqueId());
+            db.updatePlayerPassword(player, null);
+            main.getAuthenticated().remove(player.getUniqueId());
             player.sendMessage(Component.text(main.getConfig().getString("messages.success-unregistered",
                     "§aTi sei unregistrato con successo!")));
             return true;
         }
-        player.sendMessage(Component.text(main.NOT_AUTHENTICATED));
+        player.sendMessage(Component.text(NOT_AUTHENTICATED));
         return true;
     }
 }
