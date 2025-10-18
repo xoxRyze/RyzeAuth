@@ -13,6 +13,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.eclipse.aether.util.ConfigUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.sql.SQLException;
@@ -46,6 +47,10 @@ public class AdminauthCommand implements CommandExecutor {
                         .hoverEvent(HoverEvent.showText(Component.text("§7Unregistra forzatamente un player"))));
                 player.sendMessage(Component.text("/adminauth register <player> <password>", Palette.AQUA)
                         .hoverEvent(HoverEvent.showText(Component.text("§7Registra forzatamente un player"))));
+                player.sendMessage(Component.text("/adminauth kick <player> <reason>", Palette.AQUA)
+                        .hoverEvent(HoverEvent.showText(Component.text("§7Espelli un player dal server"))));
+                player.sendMessage(Component.text("/adminauth dupeip [<player> | <ip>]", Palette.AQUA)
+                        .hoverEvent(HoverEvent.showText(Component.text("§7Controlla gli account collegati ad un ip"))));
                 player.sendMessage(Component.empty());
                 return true;
             }
@@ -56,6 +61,8 @@ public class AdminauthCommand implements CommandExecutor {
             sender.sendMessage(Component.text("/adminauth checkip <player>", Palette.AQUA));
             sender.sendMessage(Component.text("/adminauth unregister <player>", Palette.AQUA));
             sender.sendMessage(Component.text("/adminauth register <player> <password>", Palette.AQUA));
+            sender.sendMessage(Component.text("/adminauth kick <player> <reason>", Palette.AQUA));
+            sender.sendMessage(Component.text("/adminauth dupeip <player>", Palette.AQUA));
             sender.sendMessage(Component.empty());
             return true;
         }
@@ -68,7 +75,8 @@ public class AdminauthCommand implements CommandExecutor {
         }
 
         if (args[0].equals("changepassword") || args[0].equalsIgnoreCase("unregister") ||
-                args[0].equalsIgnoreCase("register") || args[0].equalsIgnoreCase("checkip")) {
+                args[0].equalsIgnoreCase("register") || args[0].equalsIgnoreCase("checkip") ||
+                args[0].equalsIgnoreCase("kick") || args[0].equalsIgnoreCase("dupeip")) {
 
             if (args[0].equalsIgnoreCase("changepassword")) {
 
@@ -263,6 +271,84 @@ public class AdminauthCommand implements CommandExecutor {
                         + "\n§rLast Address: §f" + playerip + "\n", Palette.AQUA));
 
                 return true;
+            }
+
+            if (args[0].equalsIgnoreCase("kick")) {
+
+                if (sender instanceof Player player) {
+                    if (!Permission.hasPermission(player, "adminauth.kick")) {
+                        player.sendMessage(Component.text(NO_PERMISSION));
+                        return true;
+                    }
+                }
+
+                if (args.length < 2) {
+                    sender.sendMessage(Component.text(main.getConfig().getString("messages.usage-adminauth-kick",
+                            "§cUtilizza /adminauth kick <player> <motivo>")));
+                    return true;
+                }
+
+                Player target = Bukkit.getPlayer(args[1]);
+
+                if (!target.isOnline()) {
+                    sender.sendMessage(Component.text(PLAYER_MAI_ENTRATO));
+                    return true;
+                }
+
+                String motivo;
+                if (args[2] == null) {
+                    target.kick();
+                    String sendername = "Console";
+                    if (sender instanceof Player) {
+                        sendername = sender.getName();
+                    }
+                    for (Player p : Bukkit.getOnlinePlayers()) {
+                        if (Permission.hasPermission(p, "adminauth")) {
+                            p.sendMessage(Component.text(
+                                    main.getConfig().getString("messages.success-kick",
+                                                    "\n §aᴋɪᴄᴋ\n §f%player%§7 ha espluso §f%target%§7 dal server.")
+                                            .replace("%player%", sendername)
+                                            .replace("%target%", target.getName())));
+                            return true;
+                        }
+                    }
+                    return true;
+                }
+                target.kick();
+                String sendername = "Console";
+                if (sender instanceof Player) {
+                    sendername = sender.getName();
+                }
+                for (Player p : Bukkit.getOnlinePlayers()) {
+                    if (Permission.hasPermission(p, "adminauth")) {
+                        p.sendMessage(Component.text(
+                                main.getConfig().getString("messages.success-kick",
+                                                "\n §aᴋɪᴄᴋ\n §f%player%§7 ha espluso §f%target%§7 dal server.")
+                                        .replace("%player%", sendername)
+                                        .replace("%target%", target.getName()))
+                                .hoverEvent(HoverEvent.showText(Component.text("§7Motivo §8» §f" + args[2]))));
+                        return true;
+                    }
+                }
+
+            }
+
+            if (args[0].equalsIgnoreCase("dupeip")) {
+                if (args.length != 2) {
+                    sender.sendMessage(Component.text(main.getConfig().getString("messages.usage-adminauth-dupeip",
+                            "§cUtilizza /adminauth dupeip [<player> | <ip>]")));
+                    return true;
+                }
+
+                OfflinePlayer target = Bukkit.getOfflinePlayer(args[1]);
+
+                if (!target.hasPlayedBefore()) {
+                    sender.sendMessage(Component.text(PLAYER_MAI_ENTRATO));
+                    return true;
+                }
+
+                // todo dupeip system
+
             }
 
         }

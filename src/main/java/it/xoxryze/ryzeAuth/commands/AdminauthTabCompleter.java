@@ -27,6 +27,7 @@ public class AdminauthTabCompleter implements TabCompleter {
             completitions.add("unregister");
             completitions.add("register");
             completitions.add("checkip");
+            completitions.add("kick");
         }
         if (args.length == 2) {
             for (Player p : Bukkit.getOnlinePlayers()) {
