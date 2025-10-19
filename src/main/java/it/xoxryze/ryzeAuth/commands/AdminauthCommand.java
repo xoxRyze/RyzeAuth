@@ -2,6 +2,7 @@ package it.xoxryze.ryzeAuth.commands;
 
 import it.xoxryze.ryzeAuth.RyzeAuth;
 import it.xoxryze.ryzeAuth.database.tables.AuthTable;
+import it.xoxryze.ryzeAuth.managers.ConfigManager.*;
 import it.xoxryze.ryzeAuth.utils.Palette;
 import it.xoxryze.ryzeAuth.utils.PasswordUtils;
 import it.xoxryze.ryzeAuth.utils.Permission;
@@ -113,12 +114,12 @@ public class AdminauthCommand implements CommandExecutor {
 
                 Integer lunghezzapw = args[2].length();
 
-                if (lunghezzapw < PW_LENGHT_MIN) {
+                if (lunghezzapw < PW_LENGTH_MIN) {
                     sender.sendMessage(Component.text(PASSWORD_CORTA));
                     return true;
                 }
 
-                if (lunghezzapw > PW_LENGHT_MAX) {
+                if (lunghezzapw > PW_LENGTH_MAX) {
                     sender.sendMessage(Component.text(PASSWORD_LUNGA));
                     return true;
                 }
@@ -210,12 +211,12 @@ public class AdminauthCommand implements CommandExecutor {
 
                 Integer lunghezzapw = args[2].length();
 
-                if (lunghezzapw < PW_LENGHT_MIN) {
+                if (lunghezzapw < PW_LENGTH_MIN) {
                     sender.sendMessage(Component.text(PASSWORD_CORTA));
                     return true;
                 }
 
-                if (lunghezzapw > PW_LENGHT_MAX) {
+                if (lunghezzapw > PW_LENGTH_MAX) {
                     sender.sendMessage(Component.text(PASSWORD_LUNGA));
                     return true;
                 }

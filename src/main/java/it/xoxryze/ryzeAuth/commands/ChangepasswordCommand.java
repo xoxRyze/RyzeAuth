@@ -67,12 +67,12 @@ public class ChangepasswordCommand implements CommandExecutor {
             return true;
         }
 
-        if (newPassword.length() < PW_LENGHT_MIN) {
+        if (newPassword.length() < PW_LENGTH_MIN) {
             player.sendMessage(Component.text(PASSWORD_CORTA));
             return true;
         }
 
-        if (newPassword.length() > PW_LENGHT_MAX) {
+        if (newPassword.length() > PW_LENGTH_MAX) {
             player.sendMessage(Component.text(PASSWORD_LUNGA));
             return true;
         }

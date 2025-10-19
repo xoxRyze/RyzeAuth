@@ -58,12 +58,12 @@ public class RegisterCommand implements CommandExecutor {
 
         Integer lunghezzapw = args[0].length();
 
-        if (lunghezzapw < PW_LENGHT_MIN) {
+        if (lunghezzapw < PW_LENGTH_MIN) {
             player.sendMessage(Component.text(PASSWORD_CORTA));
             return true;
         }
 
-        if (lunghezzapw > PW_LENGHT_MAX) {
+        if (lunghezzapw > PW_LENGTH_MAX) {
             player.sendMessage(Component.text(PASSWORD_LUNGA));
             return true;
         }
