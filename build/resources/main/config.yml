@@ -38,6 +38,7 @@ messages:
   usage-adminauth-unregister: "§cUtilizza /adminauth unregister <player>"
   usage-adminauth-changepassword: "§cUtilizza /adminauth changepassword <player> <password>"
   usage-adminauth-kick: "§cUtilizza /adminauth kick <player> <motivo>"
+  usage-adminauth-dupeip: "§cUtilizza /adminauth dupeip [<player> | <ip>]"
 
   # permissions #
   # /unlogin -> ryzeauth.command.unlogin #
@@ -91,3 +92,4 @@ messages:
   #  usage-adminauth-unregister: "§x§F§F§3§3§0§0Utilizza /adminauth unregister <player>"
   #  usage-adminauth-changepassword: "§x§F§F§3§3§0§0Utilizza /adminauth changepassword <player> <password>"
   #  usage-adminauth-kick: "§x§F§F§3§3§0§0Utilizza /adminauth kick <player> <motivo>"
+  #  usage-adminauth-dupeip: "§x§F§F§3§3§0§0Utilizza /adminauth dupeip [<player> | <ip>]"

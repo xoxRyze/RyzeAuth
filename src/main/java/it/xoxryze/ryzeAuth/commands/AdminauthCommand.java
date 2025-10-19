@@ -13,10 +13,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.eclipse.aether.util.ConfigUtils;
 import org.jetbrains.annotations.NotNull;
-
-import java.sql.SQLException;
 
 import static it.xoxryze.ryzeAuth.managers.ConfigManager.*;
 
@@ -341,13 +338,29 @@ public class AdminauthCommand implements CommandExecutor {
                 }
 
                 OfflinePlayer target = Bukkit.getOfflinePlayer(args[1]);
-
+                
                 if (!target.hasPlayedBefore()) {
-                    sender.sendMessage(Component.text(PLAYER_MAI_ENTRATO));
+                    db.getAddress(args[1]).thenAccept(nicknames -> {
+                        if (nicknames.isEmpty()) {
+                            sender.sendMessage(Component.text("Nessun risultato trovato.", Palette.RED));
+                        } else {
+                            sender.sendMessage(Component.text("§7Player trovati con l'ip inserito:\n" +
+                                    " §f" + String.join(", ", nicknames)));
+                        }
+                    });
                     return true;
                 }
+                String padress = String.valueOf(db.getPlayerAddress(target));
 
-                // todo dupeip system
+                db.getAddress(padress).thenAccept(nicknames -> {
+                    if (nicknames.isEmpty()) {
+                        sender.sendMessage(Component.text("Nessun risultato trovato.", Palette.RED));
+                    } else {
+                        sender.sendMessage(Component.text("§7Player trovati con l'ip di %target%:\n" +
+                                " §f" + String.join(", ", nicknames)
+                                .replace("%target%", target.getName())));
+                    }
+                });
 
             }
 

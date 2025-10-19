@@ -9,6 +9,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
@@ -38,6 +40,11 @@ public class AuthTable extends DatabaseTable {
             SELECT password
             FROM auth WHERE uuid = ?;
             """;
+
+    private static final String SELECT_NICKS_BY_IP = """
+        SELECT nickname FROM auth
+        WHERE ip = ?;
+        """;
 
     private static final String SELECT_IP = """
             SELECT ip FROM auth
@@ -127,6 +134,28 @@ public class AuthTable extends DatabaseTable {
             }
 
             return Optional.empty();
+        });
+    }
+
+    public CompletableFuture<List<String>> getAddress(String address) {
+        return CompletableFuture.supplyAsync(() -> {
+            List<String> nicknames = new ArrayList<>();
+
+            try (Connection connection = db.getConnection();
+                 PreparedStatement preparedStatement = connection.prepareStatement(SELECT_NICKS_BY_IP)) {
+
+                preparedStatement.setString(1, address);
+                ResultSet resultSet = preparedStatement.executeQuery();
+
+                while (resultSet.next()) {
+                    nicknames.add(resultSet.getString("nickname"));
+                }
+
+            } catch (SQLException e) {
+                LogUtils.logError(e, "Unable to get nicknames for IP address " + address);
+            }
+
+            return nicknames;
         });
     }
 
