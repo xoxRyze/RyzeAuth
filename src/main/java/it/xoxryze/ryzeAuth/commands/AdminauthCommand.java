@@ -16,6 +16,12 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
+
 import static it.xoxryze.ryzeAuth.managers.ConfigManager.*;
 
 public class AdminauthCommand implements CommandExecutor {
@@ -98,9 +104,9 @@ public class AdminauthCommand implements CommandExecutor {
                     return true;
                 }
 
-                String targetpw = String.valueOf(db.getPlayerPassword(target));
+                Optional<String> passwordOpt = db.getPlayerPassword(target).join();
 
-                if (targetpw == null) {
+                if (passwordOpt.isEmpty()) {
                     sender.sendMessage(Component.text(main.getConfig().getString("messages.player-never-authenticated",
                             "§cIl player non si è mai autenticato!")));
                     return true;
@@ -153,9 +159,9 @@ public class AdminauthCommand implements CommandExecutor {
                     return true;
                 }
 
-                String playerpw = String.valueOf(db.getPlayerPassword(target));
+                Optional<String> playerpw = String.valueOf(db.getPlayerPassword(target)).describeConstable();
 
-                if (playerpw == null) {
+                if (!playerpw.isPresent()) {
                     sender.sendMessage(Component.text(main.getConfig().getString("messages.player-never-authenticated",
                             "§cIl player non si è mai autenticato!")));
                     return true;
@@ -257,7 +263,12 @@ public class AdminauthCommand implements CommandExecutor {
                     return true;
                 }
 
-                String playerip = String.valueOf(db.getPlayerAddress(target));
+                CompletableFuture<Optional<String>> playerip = db.getPlayerAddress(target);
+
+                if (playerip.join().isEmpty()) {
+                    sender.sendMessage(Component.text("Si è verificato un errore. (No Adress)", Palette.RED));
+                    return true;
+                }
 
                 String status = "§cOffline";
 
@@ -265,7 +276,7 @@ public class AdminauthCommand implements CommandExecutor {
                     status = "§aOnline";
                 }
 
-                sender.sendMessage(Component.text("\nPlayer: §f" + target.getName() + "\nStatus: §f" + status
+                sender.sendMessage(Component.text("\nPlayer: §f" + target.getName() + "\n§rStatus: §f" + status
                         + "\n§rLast Address: §f" + playerip + "\n", Palette.AQUA));
 
                 return true;
@@ -288,13 +299,11 @@ public class AdminauthCommand implements CommandExecutor {
 
                 Player target = Bukkit.getPlayer(args[1]);
 
-                if (!target.isOnline()) {
-                    sender.sendMessage(Component.text(PLAYER_MAI_ENTRATO));
+                if (target == null) {
                     return true;
                 }
 
-                String motivo;
-                if (args[2] == null) {
+                if (args.length < 3) {
                     target.kick();
                     String sendername = "Console";
                     if (sender instanceof Player) {
@@ -312,7 +321,8 @@ public class AdminauthCommand implements CommandExecutor {
                     }
                     return true;
                 }
-                target.kick();
+               String motivo = String.join(" ", Arrays.copyOfRange(args, 2, args.length));
+                target.kick(Component.text(motivo));
                 String sendername = "Console";
                 if (sender instanceof Player) {
                     sendername = sender.getName();

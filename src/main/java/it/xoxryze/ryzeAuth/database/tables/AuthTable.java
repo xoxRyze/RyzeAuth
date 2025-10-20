@@ -52,13 +52,13 @@ public class AuthTable extends DatabaseTable {
             """;
 
     private static final String UPDATE_ADDRESS = """
-            UPDATE players
+            UPDATE auth
             SET ip = ?
             WHERE uuid = ?;
             """;
 
     private static final String UPDATE_PASSWORD = """
-            UPDATE players
+            UPDATE auth
             SET password = ?
             WHERE uuid = ?;
             """;
@@ -103,6 +103,9 @@ public class AuthTable extends DatabaseTable {
 
     public CompletableFuture<Optional<String>> getPlayerPassword(OfflinePlayer player) {
         return CompletableFuture.supplyAsync(() -> {
+            if (!playerExists(player).join()) {
+                addPlayer(player);
+            }
             try (Connection connection = db.getConnection();
                  PreparedStatement preparedStatement = connection.prepareStatement(SELECT_PASSWORD)) {
 
@@ -121,6 +124,9 @@ public class AuthTable extends DatabaseTable {
 
     public CompletableFuture<Optional<String>> getPlayerAddress(OfflinePlayer player) {
         return CompletableFuture.supplyAsync(() -> {
+            if (!playerExists(player).join()) {
+                addPlayer(player);
+            }
             try (Connection connection = db.getConnection();
                  PreparedStatement preparedStatement = connection.prepareStatement(SELECT_IP)) {
 
@@ -161,7 +167,9 @@ public class AuthTable extends DatabaseTable {
 
     public CompletableFuture<Boolean> updatePlayerAddress(OfflinePlayer player, String ip) {
         return CompletableFuture.supplyAsync(() -> {
-
+            if (!playerExists(player).join()) {
+                addPlayer(player);
+            }
             try (Connection connection = db.getConnection();
                  PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_ADDRESS)) {
 
@@ -180,6 +188,9 @@ public class AuthTable extends DatabaseTable {
 
     public CompletableFuture<Boolean> updatePlayerPassword(OfflinePlayer player, String password) {
         return CompletableFuture.supplyAsync(() -> {
+            if (!playerExists(player).join()) {
+                addPlayer(player);
+            }
             try (Connection connection = db.getConnection();
                  PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_PASSWORD)) {
 

@@ -10,7 +10,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import java.sql.SQLException;
+import java.util.Optional;
 
 import static it.xoxryze.ryzeAuth.managers.ConfigManager.*;
 
@@ -37,17 +37,15 @@ public class RegisterCommand implements CommandExecutor {
             return true;
         }
 
-        String playerpassword = String.valueOf(db.getPlayerPassword(player));
-
         if (main.getAuthenticated().contains(player.getUniqueId())) {
             player.sendMessage(Component.text(ALREADY_AUTHENTICATED));
             return true;
         }
 
-        if (playerpassword != null) {
-            player.sendMessage(Component.text(
-                    ALREADY_REGISTRED
-            ));
+        Optional<String> playerPasswordOpt = db.getPlayerPassword(player).join();
+
+        if (playerPasswordOpt.isPresent()) {
+            player.sendMessage(Component.text(ALREADY_REGISTRED));
             return true;
         }
 

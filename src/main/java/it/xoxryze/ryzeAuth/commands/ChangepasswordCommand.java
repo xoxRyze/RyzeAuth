@@ -13,6 +13,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.sql.SQLException;
+import java.util.Optional;
 
 import static it.xoxryze.ryzeAuth.managers.ConfigManager.*;
 
@@ -49,8 +50,15 @@ public class ChangepasswordCommand implements CommandExecutor {
             return true;
         }
 
-        String currentHashedPassword = String.valueOf(db.getPlayerPassword(player));
+        Optional<String> currentHashedOpt = db.getPlayerPassword(player).join();
         String newPassword = args[1];
+
+        if (currentHashedOpt.isEmpty()) {
+            player.sendMessage(Component.text("§cErrore, contatta uno Staffer."));
+            return true;
+        }
+
+        String currentHashedPassword = currentHashedOpt.get();
 
         if (!PasswordUtils.checkPassword(args[0], currentHashedPassword)) {
             player.sendMessage(Component.text(PASSWORD_SBAGLIATA));

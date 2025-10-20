@@ -2,6 +2,8 @@ package it.xoxryze.ryzeAuth.listeners;
 
 import it.xoxryze.ryzeAuth.RyzeAuth;
 import it.xoxryze.ryzeAuth.database.tables.AuthTable;
+import it.xoxryze.ryzeAuth.utils.Permission;
+import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -21,6 +23,14 @@ public class PlayerJoin implements Listener {
     @EventHandler
     public void onPlayerJoin (PlayerJoinEvent e) throws SQLException {
         Player player = e.getPlayer();
+
+        if (Permission.hasNormPermission(player, "bypass")) {
+            main.getAuthenticated().add(player.getUniqueId());
+            player.sendMessage(Component.text("\n §aʙʏᴘᴀѕѕ \n §7Sei stato autenticato in automatico (bypass)"));
+            db.updatePlayerAddress(player, player.getAddress().toString());
+            return;
+        }
+
         String registered, lastaddress;
         registered = "Yes";
 
@@ -42,5 +52,6 @@ public class PlayerJoin implements Listener {
         main.getLogger().info(" ");
         return;
     }
+
 
 }

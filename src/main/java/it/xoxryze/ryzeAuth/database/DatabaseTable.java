@@ -14,6 +14,7 @@ public abstract class DatabaseTable {
     protected DatabaseTable(DatabaseManager db, String tableQuery) {
         this.db = db;
         this.tableQuery = tableQuery;
+        createTable();
     }
 
     private void createTable() {

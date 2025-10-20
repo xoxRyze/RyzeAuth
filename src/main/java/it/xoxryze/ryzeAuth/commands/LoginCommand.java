@@ -10,7 +10,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import java.sql.SQLException;
+import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
 import static it.xoxryze.ryzeAuth.managers.ConfigManager.*;
 
@@ -37,27 +38,40 @@ public class LoginCommand implements CommandExecutor {
             return true;
         }
 
-        String playerpassword = String.valueOf(db.getPlayerPassword(player));
+        CompletableFuture<Optional<String>> passwordFuture = db.getPlayerPassword(player);
 
-        if (main.getAuthenticated().contains(player.getUniqueId())) {
-            player.sendMessage(Component.text(ALREADY_AUTHENTICATED));
-            return true;
-        }
+        passwordFuture.thenAccept(playerPasswordOpt -> {
+            if (main.getAuthenticated().contains(player.getUniqueId())) {
+                player.sendMessage(Component.text(ALREADY_AUTHENTICATED));
+                return;
+            }
 
-        if (playerpassword == null) {
-            player.sendMessage(Component.text(NOT_REGISTERED));
-            return true;
-        }
+            if (playerPasswordOpt.isEmpty()) {
+                player.sendMessage(Component.text(NOT_REGISTERED));
+                return;
+            }
 
-        if (PasswordUtils.checkPassword(args[0], playerpassword)) {
-            player.sendMessage(Component.text(main.getConfig().getString("messages.success-login",
-                    "§aHai effettuato il login con successo!")));
-            main.getAuthenticated().add(player.getUniqueId());
-            db.updatePlayerAddress(player, player.getAddress().toString());
+            String hashedPassword = playerPasswordOpt.get();
 
-            return true;
-        }
-        player.sendMessage(Component.text(PASSWORD_SBAGLIATA));
+            if (hashedPassword == null || hashedPassword.trim().isEmpty()) {
+                player.sendMessage(Component.text(NOT_REGISTERED));
+                return;
+            }
+
+            if (PasswordUtils.checkPassword(args[0], hashedPassword)) {
+                player.sendMessage(Component.text(main.getConfig().getString("messages.success-login",
+                        "§aHai effettuato il login con successo!")));
+                main.getAuthenticated().add(player.getUniqueId());
+                db.updatePlayerAddress(player, player.getAddress().toString());
+            } else {
+                player.sendMessage(Component.text(PASSWORD_SBAGLIATA));
+            }
+        }).exceptionally(throwable -> {
+            player.sendMessage(Component.text("§cErrore durante il login. Riprova."));
+            throwable.printStackTrace();
+            return null;
+        });
+
         return true;
     }
 }

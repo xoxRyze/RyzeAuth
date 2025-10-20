@@ -10,8 +10,8 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-
-import java.sql.SQLException;
+import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
 import static it.xoxryze.ryzeAuth.managers.ConfigManager.*;
 
@@ -43,9 +43,7 @@ public class UnregisterCommand implements CommandExecutor {
             return true;
         }
 
-        String playerpw;
-
-        playerpw = String.valueOf(db.getPlayerPassword(player));
+        CompletableFuture<Optional<String>> playerpw = db.getPlayerPassword(player);
 
         if (playerpw == null) {
             player.sendMessage(Component.text(NOT_REGISTERED));
@@ -53,7 +51,7 @@ public class UnregisterCommand implements CommandExecutor {
         }
 
         if (main.getAuthenticated().contains(player.getUniqueId())) {
-            if (!PasswordUtils.checkPassword(args[0], playerpw)) {
+            if (!PasswordUtils.checkPassword(args[0], String.valueOf(playerpw))) {
                 player.sendMessage(Component.text(PASSWORD_SBAGLIATA));
                 return true;
             }
