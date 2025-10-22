@@ -24,13 +24,6 @@ public class PlayerJoin implements Listener {
     public void onPlayerJoin (PlayerJoinEvent e) throws SQLException {
         Player player = e.getPlayer();
 
-        if (Permission.hasNormPermission(player, "bypass")) {
-            main.getAuthenticated().add(player.getUniqueId());
-            player.sendMessage(Component.text("\n §aʙʏᴘᴀѕѕ \n §7Sei stato autenticato in automatico"));
-            db.updatePlayerAddress(player, player.getAddress().toString());
-            return;
-        }
-
         String registered, lastaddress;
         registered = "Yes";
 
