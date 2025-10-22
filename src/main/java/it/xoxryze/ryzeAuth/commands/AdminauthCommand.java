@@ -16,9 +16,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
@@ -63,6 +61,7 @@ public class AdminauthCommand implements CommandExecutor {
             sender.sendMessage(Component.empty());
             sender.sendMessage(Component.text("/adminauth changepassword <player> <password>", Palette.AQUA));
             sender.sendMessage(Component.text("/adminauth checkip <player>", Palette.AQUA));
+
             sender.sendMessage(Component.text("/adminauth unregister <player>", Palette.AQUA));
             sender.sendMessage(Component.text("/adminauth register <player> <password>", Palette.AQUA));
             sender.sendMessage(Component.text("/adminauth kick <player> <reason>", Palette.AQUA));

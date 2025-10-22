@@ -26,7 +26,7 @@ public class PlayerJoin implements Listener {
 
         if (Permission.hasNormPermission(player, "bypass")) {
             main.getAuthenticated().add(player.getUniqueId());
-            player.sendMessage(Component.text("\n §aʙʏᴘᴀѕѕ \n §7Sei stato autenticato in automatico (bypass)"));
+            player.sendMessage(Component.text("\n §aʙʏᴘᴀѕѕ \n §7Sei stato autenticato in automatico"));
             db.updatePlayerAddress(player, player.getAddress().toString());
             return;
         }
