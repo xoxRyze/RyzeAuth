@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Gradle
 .gradle/
 build/
@@ -10,3 +11,16 @@ gradle/
 *.iml
 *.ipr
 out/
+=======
+
+/.idea/
+/shelf/
+/workspace.xml
+
+/build/
+/.gradle/
+/out/
+
+*.log
+*.tmp
+>>>>>>> 3f13be5b44ec5a56619de1731734b5c681413e60

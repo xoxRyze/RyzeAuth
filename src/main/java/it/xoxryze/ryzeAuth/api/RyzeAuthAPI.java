@@ -30,5 +30,4 @@ public class RyzeAuthAPI {
     public CompletableFuture<Optional<String>> getLastAddress(OfflinePlayer player) {
         return main.getAuthTable().getPlayerAddress(player);
     }
-
 }
