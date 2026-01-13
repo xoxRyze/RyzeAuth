@@ -1,0 +1,14 @@
+name: RyzeAuth
+version: '1.0.0'
+main: it.xoxryze.ryzeAuth.RyzeAuth
+api-version: '1.21'
+authors: [RyZeeTheBest, @xoxRyze]
+
+commands:
+  register:
+  login:
+  changepassword:
+  unregister:
+  unlogin:
+  adminauth:
+    permission: ryzeauth.command.adminauth

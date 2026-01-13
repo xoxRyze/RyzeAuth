@@ -1,0 +1,35 @@
+package it.xoxryze.ryzeAuth.listeners;
+
+import it.xoxryze.ryzeAuth.RyzeAuth;
+import it.xoxryze.ryzeAuth.utils.Palette;
+import net.kyori.adventure.text.Component;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerChatEvent;
+import org.bukkit.event.player.PlayerCommandSendEvent;
+
+import static it.xoxryze.ryzeAuth.managers.ConfigManager.EVENT_NOT_AUTH;
+
+public class PlayerChat implements Listener {
+
+    private final RyzeAuth main;
+
+    public PlayerChat(RyzeAuth main) {
+        this.main = main;
+    }
+
+    @EventHandler
+    public void onPlayerChat (PlayerChatEvent e) {
+        Player player = e.getPlayer();
+
+        if (!main.getAuthenticated().contains(player.getUniqueId())) {
+            e.setCancelled(true);
+
+            player.sendMessage(Component.text(EVENT_NOT_AUTH));
+            return;
+        }
+
+    }
+
+}
