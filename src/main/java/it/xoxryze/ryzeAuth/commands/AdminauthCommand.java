@@ -373,7 +373,7 @@ public class AdminauthCommand implements CommandExecutor {
                 });
 
             }
-
+            return true;
         }
 
         sender.sendMessage(Component.text(main.getConfig().getString("messages.usage-adminauth",

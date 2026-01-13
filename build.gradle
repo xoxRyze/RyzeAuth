@@ -52,6 +52,7 @@ processResources {
     filesMatching('plugin.yml') {
         expand props
     }
+
 }
 
 shadowJar {

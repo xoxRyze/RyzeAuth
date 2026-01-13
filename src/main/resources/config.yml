@@ -1,4 +1,5 @@
 config:
+  send-rules: true
   password-lunghezza-min: 5
   password-lunghezza-max: 16
 
@@ -54,6 +55,7 @@ messages:
 
   # BETTER COLORS CONFIGURATIONS:
   #config:
+  #  send-rules: true
   #  password-lunghezza-min: 5
   #  password-lunghezza-max: 16
   #

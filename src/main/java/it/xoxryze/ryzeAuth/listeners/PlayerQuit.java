@@ -23,7 +23,6 @@ public class PlayerQuit implements Listener {
             main.getAuthenticated().remove(player.getUniqueId());
         }
 
-
     }
 
 }

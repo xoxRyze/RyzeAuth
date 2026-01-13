@@ -1,8 +1,8 @@
 name: RyzeAuth
-version: '1.0.0'
+version: 1.0-SNAPSHOT
 main: it.xoxryze.ryzeAuth.RyzeAuth
-api-version: '1.21'
-authors: [RyZeeTheBest, @xoxRyze]
+api-version: 1.21
+authors: [RyZeeTheBest]
 
 commands:
   register:
