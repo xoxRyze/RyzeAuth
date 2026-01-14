@@ -12,3 +12,5 @@ commands:
   unlogin:
   adminauth:
     permission: ryzeauth.command.adminauth
+  ryzeauth:agree:
+  ryzeauth:disagree:

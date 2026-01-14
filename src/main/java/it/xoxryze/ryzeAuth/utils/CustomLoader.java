@@ -22,21 +22,6 @@ public class CustomLoader {
             module.getServer().getPluginManager().registerEvents(new PlayerCommand(module), module);
             module.getServer().getPluginManager().registerEvents(new PlayerInteract(module), module);
             module.getServer().getPluginManager().registerEvents(new PlayerJoin(authTable, module), module);
-
-            if (module.getConfig().getBoolean("send-rules", true)) {
-                try {
-                    String version = module.getServer().getVersion();
-                    if (version.startsWith("1.21.8") || version.startsWith("1.21.9")
-                            || version.startsWith("1.21.10") || version.startsWith("1.21.11")) {
-                        module.getServer().getPluginManager().registerEvents(new JoinRulesListener(module), module);
-                        module.getLogger().info("[DEBUG] JoinRulesListener has been enabled.");
-                    }
-                } catch (Exception e) {
-                    LogUtils.logError(e, "An error occured attemping to enable JoinRulesListener");
-                    module.getConfig().set("send-rules", false);
-                }
-                return;
-            }
         } catch (Exception e) {
             LogUtils.logError(e, "An error occured in the listeners initialization.");
             module.getServer().getPluginManager().disablePlugin(module);
