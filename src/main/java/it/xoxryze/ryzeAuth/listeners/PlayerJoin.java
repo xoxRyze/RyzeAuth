@@ -24,27 +24,28 @@ public class PlayerJoin implements Listener {
     public void onPlayerJoin (PlayerJoinEvent e) throws SQLException {
         Player player = e.getPlayer();
 
-        String registered, lastaddress;
-        registered = "Yes";
+        db.getPlayerAddress(player).thenAccept(optionalAddress -> {
+            String registered = "Yes";
+            String lastaddress = "Non-existent";
 
-        lastaddress = String.valueOf(db.getPlayerAddress(player));
-        if (lastaddress == null) {
-            lastaddress = "Non-existent";
-            registered = "No";
-        }
+            if (optionalAddress.isPresent() && optionalAddress.get() != null) {
+                lastaddress = optionalAddress.get();
+            } else {
+                registered = "No";
+            }
 
-        player.getMetadata("");
+            String currentIp = player.getAddress() != null ?
+                    player.getAddress().getAddress().getHostAddress() : "Unknown";
+            db.updatePlayerAddress(player, currentIp);
 
-        main.getLogger().info(" ");
-        main.getLogger().info("PLAYER JOIN");
-        main.getLogger().info("Username: " + player.getName());
-        main.getLogger().info("UuId: " + player.getUniqueId());
-        main.getLogger().info("Address: " + player.getAddress());
-        main.getLogger().info("Last Address: " + lastaddress);
-        main.getLogger().info("Registered: " + registered);
-        main.getLogger().info(" ");
-        return;
+            main.getLogger().info(" ");
+            main.getLogger().info("PLAYER JOIN");
+            main.getLogger().info("Username: " + player.getName());
+            main.getLogger().info("UuId: " + player.getUniqueId());
+            main.getLogger().info("Current Address: " + currentIp);
+            main.getLogger().info("Last Address: " + lastaddress);
+            main.getLogger().info("Registered: " + registered);
+            main.getLogger().info(" ");
+        });
     }
-
-
 }

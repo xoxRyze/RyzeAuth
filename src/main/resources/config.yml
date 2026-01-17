@@ -1,96 +1,56 @@
 config:
-  password-lunghezza-min: 5
-  password-lunghezza-max: 16
+  password-min-lenght: 5
+  password-max-lenght: 16
 
 messages:
-  no-permission: "§cNon hai il permesso per poterlo fare!"
+  no-permission: "§cYou don't have permission to do that!"
+  reload-success: "§aYou reload the configuration file in §2%s §ams"
 
-  registrazione-completata: "§aHai effettuato la registrazione con successo!"
-  already-registred: "§cIl tuo account è già registrato!\nDigita §l/login <password>§c per autenticarti."
-  not-registered: "§cDevi essere registrato per poterlo fare!"
-  success-unregistered: "§aTi sei unregistrato con successo!"
-  player-never-join: "§cIl player non è mai entrato nel server!"
-  success-unlogin: "§aHai effettuato l'unlogin con successo."
-  success-kick: "\n §aᴋɪᴄᴋ\n §f%player%§7 ha espluso §f%target%§7 dal server."
+  register-completed: "§aYou have successfully registered!"
+  already-registred: "§cYour account is already registered!\nType §l/login <password>§c to authenticate.."
+  not-registered: "§cYou must be registered to do this!"
+  success-unregistered: "§aYou have successfully unregistered!"
+  player-never-join: "§cThe player never joined the server!"
+  success-unlogin: "§aYou have successfully logged out."
+  success-kick: "\n §aᴋɪᴄᴋ\n §f%player%§7 kicked §f%target%§7 dal server."
 
-  success-login: "§aHai effettuato il login con successo!"
-  already-authenticated: "§cHai già effettuato l'autenticazione!"
-  not-authenticated: "§cDevi essere autenticato per poterlo fare!"
-  event-not-authenticated: "§cNon sei autenticato, digita /login <password> o /register"
-  password-sbagliata: "§cLa password che hai inserito non è corretta!"
-  player-never-authenticated: "§cIl player non si è mai autenticato!"
+  success-login: "§aYou have successfully logged in!"
+  already-authenticated: "§cYou are already authenticated!"
+  not-authenticated: "§cYou must be logged in to do this.!"
+  event-not-authenticated: "§cYou are not logged in, type /login <password>"
+  password-uncorrect: "§cThe password you entered is incorrect!"
+  player-never-authenticated: "§cThe player never authenticated!"
 
-  password-non-sicura: "§cLa password non è abbastanza sicura!"
-  password-corta: "§cLa password è troppo corta!"
-  password-lunga: "§cLa password è troppo lunga!"
-  password-non-coincide: "§cLe password non coincidono!"
-  password-identica: "§cLa nuova password è identica a quella attuale!"
-  success-changepassword: "§aHai cambiato la password con successo."
+  password-unsecure: "§cThe password is not secure enough!"
+  short-password: "§cThe password is too short!"
+  long-password: "§cThe password is too long!"
+  password-not-match: "§cThe password doesn't match!"
+  same-password: "§cThe new password is identical to the current one!"
+  success-changepassword: "§aYou have successfully changed your password.."
 
-  usage-register: "§cUtilizza /register <password> <password>"
-  usage-login: "§cUtilizza /login <password>"
-  usage-unregister: "§cUtilizza /unregister <password>"
-  usage-unlogin: "§cUtilizza /unlogin"
-  usage-changepassword: "§cUtilizza /changepassword <password> <nuovapassword>"
-  usage-adminauth: "§cComando errato, utilizza /adminauth per informazioni"
-  usage-adminauth-checkip: "§cUtilizza /adminauth checkip <player>"
-  usage-adminauth-register: "§cUtilizza /adminauth register <player> <password>"
-  usage-adminauth-unregister: "§cUtilizza /adminauth unregister <player>"
-  usage-adminauth-changepassword: "§cUtilizza /adminauth changepassword <player> <password>"
-  usage-adminauth-kick: "§cUtilizza /adminauth kick <player> <motivo>"
-  usage-adminauth-dupeip: "§cUtilizza /adminauth dupeip [<player> | <ip>]"
+  usage-register: "§cUse /register <password> <password>"
+  usage-login: "§cUse /login <password>"
+  usage-unregister: "§cUse /unregister <password>"
+  usage-unlogin: "§cUse /unlogin"
+  usage-changepassword: "§cUse /changepassword <password> <nuovapassword>"
+  usage-adminauth: "§cIncorrect command, Use /adminauth for information"
+  usage-adminauth-checkip: "§cUse /adminauth checkip <player>"
+  usage-adminauth-register: "§cUse /adminauth register <player> <password>"
+  usage-adminauth-unregister: "§cUse /adminauth unregister <player>"
+  usage-adminauth-changepassword: "§cUse /adminauth changepassword <player> <password>"
+  usage-adminauth-kick: "§cUse /adminauth kick <player> <reason>"
+  usage-adminauth-dupeip: "§cUse /adminauth dupeip [<player> | <ip>]"
 
   # permissions #
   # /unlogin -> ryzeauth.command.unlogin #
-  # /unlogin -> ryzeauth.command.unregister #
+  # /unregister -> ryzeauth.command.unregister #
   # /changepassword -> ryzeauth.command.changepassword #
   # /adminauth -> ryzeauth.command.adminauth #
+  # /adminauth dupeip -> ryzeauth.command.adminauth.dupeip #
   # /adminauth checkip -> ryzeauth.command.adminauth.checkip #
+  # /adminauth reload -> ryzeauth.command.adminnauth.reload #
+  # /adminauth kick -> ryzeauth.command.adminauth.kick #
   # /adminauth unregister -> ryzeauth.command.adminauth.unregister #
   # /adminauth changepassword -> ryzeauth.command.adminauth.changepassword #
   # /adminauth register -> ryzeauth.command.adminauth.register #
   # tabcomplete -> ryzeauth.command.tabcomplete #
-
-
-  # BETTER COLORS CONFIGURATIONS:
-  #config:
-  #  password-lunghezza-min: 5
-  #  password-lunghezza-max: 16
-  #
-  #messages:
-  #  no-permission: "§x§F§F§3§3§0§0Non hai il permesso per poterlo fare!"
-  #
-  #  registrazione-completata: "§x§8§4§C§C§1§7Hai effettuato la registrazione con successo!"
-  #  already-registred: "§x§F§F§3§3§0§0Il tuo account è già registrato!\nDigita §l/login <password>§x§F§F§3§3§0§0 per autenticarti."
-  #  not-registered: "§x§F§F§3§3§0§0Devi essere registrato per poterlo fare!"
-  #  success-unregistered: "§x§8§4§C§C§1§7Ti sei unregistrato con successo!"
-  #  player-never-join: "§x§F§F§3§3§0§0Il player non è mai entrato nel server!"
-  #  success-unlogin: "§x§8§4§C§C§1§7Hai effettuato l'unlogin con successo."
-  #  success-kick: "\n §x§8§4§C§C§1§7ᴋɪᴄᴋ\n §f%player%§7 ha espluso §f%target%§7 dal server."
-  #
-  #  success-login: "§x§8§4§C§C§1§7Hai effettuato il login con successo!"
-  #  already-authenticated: "§x§F§F§3§3§0§0Hai già effettuato l'autenticazione!"
-  #  not-authenticated: "§x§F§F§3§3§0§0Devi essere autenticato per poterlo fare!"
-  #  event-not-authenticated: "§x§F§F§3§3§0§0Non sei autenticato, digita /login <password> o /register"
-  #  password-sbagliata: "§x§F§F§3§3§0§0La password che hai inserito non è corretta!"
-  #  player-never-authenticated: "§x§F§F§3§3§0§0Il player non si è mai autenticato!"
-  #
-  #  password-non-sicura: "§x§F§F§3§3§0§0La password non è abbastanza sicura!"
-  #  password-corta: "§x§F§F§3§3§0§0La password è troppo corta!"
-  #  password-lunga: "§x§F§F§3§3§0§0La password è troppo lunga!"
-  #  password-non-coincide: "§x§F§F§3§3§0§0Le password non coincidono!"
-  #  password-identica: "§x§F§F§3§3§0§0La nuova password è identica a quella attuale!"
-  #  success-changepassword: "§x§8§4§C§C§1§7Hai cambiato la password con successo."
-  #
-  #  usage-register: "§x§F§F§3§3§0§0Utilizza /register <password> <password>"
-  #  usage-login: "§x§F§F§3§3§0§0Utilizza /login <password>"
-  #  usage-unregister: "§x§F§F§3§3§0§0Utilizza /unregister <password>"
-  #  usage-unlogin: "§x§F§F§3§3§0§0Utilizza /unlogin"
-  #  usage-changepassword: "§x§F§F§3§3§0§0Utilizza /changepassword <password> <nuovapassword>"
-  #  usage-adminauth: "§x§F§F§3§3§0§0Comando errato, utilizza /adminauth per informazioni"
-  #  usage-adminauth-checkip: "§x§F§F§3§3§0§0Utilizza /adminauth checkip <player>"
-  #  usage-adminauth-register: "§x§F§F§3§3§0§0Utilizza /adminauth register <player> <password>"
-  #  usage-adminauth-unregister: "§x§F§F§3§3§0§0Utilizza /adminauth unregister <player>"
-  #  usage-adminauth-changepassword: "§x§F§F§3§3§0§0Utilizza /adminauth changepassword <player> <password>"
-  #  usage-adminauth-kick: "§x§F§F§3§3§0§0Utilizza /adminauth kick <player> <motivo>"
-  #  usage-adminauth-dupeip: "§x§F§F§3§3§0§0Utilizza /adminauth dupeip [<player> | <ip>]"

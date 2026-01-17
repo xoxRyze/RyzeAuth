@@ -206,4 +206,25 @@ public class AuthTable extends DatabaseTable {
             return false;
         });
     }
+
+    public CompletableFuture<Optional<String>> isRegistered(OfflinePlayer player) {
+        return CompletableFuture.supplyAsync(() -> {
+            try (Connection connection = db.getConnection();
+                 PreparedStatement preparedStatement = connection.prepareStatement(SELECT_PASSWORD)) {
+
+                preparedStatement.setString(1, player.getUniqueId().toString());
+                ResultSet resultSet = preparedStatement.executeQuery();
+
+                if (resultSet.next()) {
+                    String password = resultSet.getString("password");
+                    return Optional.ofNullable(password);
+                }
+
+            } catch (SQLException e) {
+                LogUtils.logError(e, "Unable to check if player is registered: " + player.getName());
+            }
+
+            return Optional.empty();
+        });
+    }
 }

@@ -34,7 +34,7 @@ public class LoginCommand implements CommandExecutor {
 
         if (args.length != 1) {
             player.sendMessage(Component.text(main.getConfig().getString("messages.usage-login",
-                    "§cUtilizza /login <password>")));
+                    "§cUse /login <password>")));
             return true;
         }
 
@@ -60,14 +60,14 @@ public class LoginCommand implements CommandExecutor {
 
             if (PasswordUtils.checkPassword(args[0], hashedPassword)) {
                 player.sendMessage(Component.text(main.getConfig().getString("messages.success-login",
-                        "§aHai effettuato il login con successo!")));
+                        "§aYou have successfully logged in!")));
                 main.getAuthenticated().add(player.getUniqueId());
                 db.updatePlayerAddress(player, player.getAddress().toString());
             } else {
-                player.sendMessage(Component.text(PASSWORD_SBAGLIATA));
+                player.sendMessage(Component.text(PASSWORD_UNCORRECT));
             }
         }).exceptionally(throwable -> {
-            player.sendMessage(Component.text("§cErrore durante il login. Riprova."));
+            player.sendMessage(Component.text("§cAn error occurred while logging in. Retry later."));
             throwable.printStackTrace();
             return null;
         });

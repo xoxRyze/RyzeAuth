@@ -17,9 +17,9 @@ public class CustomLoader {
     public static void initListener() {
         try {
             module.getServer().getPluginManager().registerEvents(new PlayerQuit(module), module);
-            module.getServer().getPluginManager().registerEvents(new PlayerMove(module), module);
-            module.getServer().getPluginManager().registerEvents(new PlayerChat(module), module);
-            module.getServer().getPluginManager().registerEvents(new PlayerCommand(module), module);
+            module.getServer().getPluginManager().registerEvents(new PlayerMove(module, authTable), module);
+            module.getServer().getPluginManager().registerEvents(new PlayerChat(module, authTable), module);
+            module.getServer().getPluginManager().registerEvents(new PlayerCommand(module, authTable), module);
             module.getServer().getPluginManager().registerEvents(new PlayerInteract(module), module);
             module.getServer().getPluginManager().registerEvents(new PlayerJoin(authTable, module), module);
         } catch (Exception e) {

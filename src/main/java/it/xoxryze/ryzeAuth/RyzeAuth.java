@@ -1,9 +1,7 @@
 package it.xoxryze.ryzeAuth;
 
-import it.xoxryze.ryzeAuth.commands.*;
 import it.xoxryze.ryzeAuth.database.DatabaseManager;
 import it.xoxryze.ryzeAuth.database.tables.AuthTable;
-import it.xoxryze.ryzeAuth.listeners.*;
 import it.xoxryze.ryzeAuth.managers.ConfigManager;
 import it.xoxryze.ryzeAuth.utils.CustomLoader;
 import org.bukkit.plugin.java.JavaPlugin;

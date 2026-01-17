@@ -34,7 +34,7 @@ public class UnloginCommand implements CommandExecutor {
 
         if (args.length >= 1) {
             player.sendMessage(Component.text(main.getConfig().getString("messages.usage-unlogin",
-                    "§cUtilizza /unlogin")));
+                    "§cUse /unlogin <password>")));
             return true;
         }
 
@@ -43,8 +43,8 @@ public class UnloginCommand implements CommandExecutor {
             return true;
         }
 
-        player.sendMessage(Component.text(main.getConfig().getString("messages.success.unlogin",
-                "§aHai effettuato l'unlogin con successo.")));
+        player.sendMessage(Component.text(main.getConfig().getString("messages.success-unlogin",
+                "§aYou have successfully logged out.")));
         main.getAuthenticated().remove(player.getUniqueId());
         return true;
     }

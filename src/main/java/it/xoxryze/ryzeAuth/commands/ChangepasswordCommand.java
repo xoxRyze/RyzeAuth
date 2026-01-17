@@ -40,13 +40,13 @@ public class ChangepasswordCommand implements CommandExecutor {
         }
 
         if (!main.getAuthenticated().contains(player.getUniqueId())) {
-            player.sendMessage(Component.text("Devi prima effettuare il login!", Palette.RED));
+            player.sendMessage(Component.text("You must have to log in first!", Palette.RED));
             return true;
         }
 
         if (args.length != 2) {
             player.sendMessage(Component.text(main.getConfig().getString("messages.usage-changepassword",
-                    "§cUtilizza /changepassword <password> <nuovapassword>")));
+                    "§cUse /changepassword <password> <new password>")));
             return true;
         }
 
@@ -54,34 +54,34 @@ public class ChangepasswordCommand implements CommandExecutor {
         String newPassword = args[1];
 
         if (currentHashedOpt.isEmpty()) {
-            player.sendMessage(Component.text("§cErrore, contatta uno Staffer."));
+            player.sendMessage(Component.text("§cAn error occurred, please contact a Staff Member."));
             return true;
         }
 
         String currentHashedPassword = currentHashedOpt.get();
 
         if (!PasswordUtils.checkPassword(args[0], currentHashedPassword)) {
-            player.sendMessage(Component.text(PASSWORD_SBAGLIATA));
+            player.sendMessage(Component.text(PASSWORD_UNCORRECT));
             return true;
         }
 
         if (PasswordUtils.checkPassword(newPassword, currentHashedPassword)) {
-            player.sendMessage(Component.text(PASSWORD_IDENTICA));
+            player.sendMessage(Component.text(SAME_PASSWORD));
             return true;
         }
 
-        if (newPassword.contains("ciao") || newPassword.contains(player.getName()) || newPassword.equals("12345")) {
-            player.sendMessage(Component.text(PASSWORD_NON_SICURA));
+        if (!PasswordUtils.isValidPassword(newPassword, player.getName())) {
+            player.sendMessage(Component.text(UNSECURE_PASSWORD));
             return true;
         }
 
         if (newPassword.length() < PW_LENGTH_MIN) {
-            player.sendMessage(Component.text(PASSWORD_CORTA));
+            player.sendMessage(Component.text(SHORT_PASSWORD));
             return true;
         }
 
         if (newPassword.length() > PW_LENGTH_MAX) {
-            player.sendMessage(Component.text(PASSWORD_LUNGA));
+            player.sendMessage(Component.text(LONG_PASSWORD));
             return true;
         }
 
@@ -89,7 +89,7 @@ public class ChangepasswordCommand implements CommandExecutor {
         db.updatePlayerPassword(player, hashedNewPassword);
 
         player.sendMessage(Component.text(main.getConfig().getString("messages.success-changepassword",
-                "§aHai cambiato la password con successo.")));
+                "§aYou have successfully changed your password..")));
         return true;
     }
 }

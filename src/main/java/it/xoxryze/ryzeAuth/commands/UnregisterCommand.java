@@ -39,7 +39,7 @@ public class UnregisterCommand implements CommandExecutor {
 
         if (args.length != 1) {
             player.sendMessage(Component.text(main.getConfig().getString("messages.usage-unregister",
-                    "§cUtilizza /unregister <password>")));
+                    "§cUse /unregister <password>")));
             return true;
         }
 
@@ -52,13 +52,13 @@ public class UnregisterCommand implements CommandExecutor {
 
         if (main.getAuthenticated().contains(player.getUniqueId())) {
             if (!PasswordUtils.checkPassword(args[0], String.valueOf(playerpw))) {
-                player.sendMessage(Component.text(PASSWORD_SBAGLIATA));
+                player.sendMessage(Component.text(PASSWORD_UNCORRECT));
                 return true;
             }
             db.updatePlayerPassword(player, null);
             main.getAuthenticated().remove(player.getUniqueId());
             player.sendMessage(Component.text(main.getConfig().getString("messages.success-unregistered",
-                    "§aTi sei unregistrato con successo!")));
+                    "§aYou have successfully unregistered!")));
             return true;
         }
         player.sendMessage(Component.text(NOT_AUTHENTICATED));

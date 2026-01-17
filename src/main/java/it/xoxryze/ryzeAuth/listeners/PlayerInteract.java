@@ -27,7 +27,5 @@ public class PlayerInteract implements Listener {
             player.sendMessage(Component.text(EVENT_NOT_AUTH));
             return;
         }
-
     }
-
 }

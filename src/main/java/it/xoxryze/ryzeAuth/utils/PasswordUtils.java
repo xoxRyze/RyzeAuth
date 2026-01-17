@@ -23,4 +23,14 @@ public class PasswordUtils {
             return false;
         }
     }
+
+    public static Boolean isValidPassword(String password, String playerName) {
+        password = password.toLowerCase();
+        playerName = playerName.toLowerCase();
+        if (password.contains("ciao") || password.contains(playerName) ||
+                password.equals("12345") || password.contains("hello")) {
+            return false;
+        }
+        return true;
+    }
 }

@@ -33,7 +33,7 @@ public class RegisterCommand implements CommandExecutor {
 
         if (args.length != 2) {
             player.sendMessage(Component.text(main.getConfig().getString("messages.usage-register",
-                    "§cUtilizza /register <password> <password>")));
+                    "§cUse /register <password> <password>")));
             return true;
         }
 
@@ -50,31 +50,31 @@ public class RegisterCommand implements CommandExecutor {
         }
 
         if (!args[0].equals(args[1])) {
-            player.sendMessage(Component.text(PASSWORD_NON_COINCIDE));
+            player.sendMessage(Component.text(PASSWORD_NOT_MATCH));
             return true;
         }
 
         Integer lunghezzapw = args[0].length();
 
         if (lunghezzapw < PW_LENGTH_MIN) {
-            player.sendMessage(Component.text(PASSWORD_CORTA));
+            player.sendMessage(Component.text(SHORT_PASSWORD));
             return true;
         }
 
         if (lunghezzapw > PW_LENGTH_MAX) {
-            player.sendMessage(Component.text(PASSWORD_LUNGA));
+            player.sendMessage(Component.text(LONG_PASSWORD));
             return true;
         }
 
-        if (args[0].contains("ciao") || args[0].contains(player.getName()) || args[0].equals("12345")) {
-            player.sendMessage(Component.text(PASSWORD_NON_SICURA));
+        if (PasswordUtils.isValidPassword(args[0], player.getName())) {
+            player.sendMessage(Component.text(UNSECURE_PASSWORD));
             return true;
         }
 
         db.updatePlayerPassword(player, PasswordUtils.hashPassword(args[0]));
         db.updatePlayerAddress(player, player.getAddress().toString());
-        String registrated = main.getConfig().getString("messages.registrazione-compeltata",
-                "§aHai effettuato la registrazione con successo!");
+        String registrated = main.getConfig().getString("messages.register-completed",
+                "§aYou have successfully registered!");
         player.sendMessage(Component.text(
                 registrated));
         main.getAuthenticated().add(player.getUniqueId());
