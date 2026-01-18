@@ -34,8 +34,7 @@ public class PlayerJoin implements Listener {
                 registered = "No";
             }
 
-            String currentIp = player.getAddress() != null ?
-                    player.getAddress().getAddress().getHostAddress() : "Unknown";
+            String currentIp = String.valueOf(player.getAddress());
             db.updatePlayerAddress(player, currentIp);
 
             main.getLogger().info(" ");

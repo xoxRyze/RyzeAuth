@@ -72,7 +72,7 @@ public class RegisterCommand implements CommandExecutor {
         }
 
         db.updatePlayerPassword(player, PasswordUtils.hashPassword(args[0]));
-        db.updatePlayerAddress(player, player.getAddress().toString());
+        db.updatePlayerAddress(player, String.valueOf(player.getAddress()));
         String registrated = main.getConfig().getString("messages.register-completed",
                 "§aYou have successfully registered!");
         player.sendMessage(Component.text(

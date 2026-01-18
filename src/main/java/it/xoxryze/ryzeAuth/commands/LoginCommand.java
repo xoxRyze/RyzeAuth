@@ -62,7 +62,7 @@ public class LoginCommand implements CommandExecutor {
                 player.sendMessage(Component.text(main.getConfig().getString("messages.success-login",
                         "§aYou have successfully logged in!")));
                 main.getAuthenticated().add(player.getUniqueId());
-                db.updatePlayerAddress(player, player.getAddress().toString());
+                db.updatePlayerAddress(player, String.valueOf(player.getAddress()));
             } else {
                 player.sendMessage(Component.text(PASSWORD_UNCORRECT));
             }

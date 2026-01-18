@@ -291,8 +291,9 @@ public class AdminauthCommand implements CommandExecutor {
                     }
                     sender.sendMessage(Component.empty());
                     sender.sendMessage(Component.text("Player: §f" + target.getName(), Palette.AQUA));
-                    sender.sendMessage(Component.text("\n§rStatus: §f" + status, Palette.AQUA));
-                    sender.sendMessage(Component.text("\n§rLast Address: §f" + playerip.get(), Palette.AQUA));
+                    sender.sendMessage(Component.text("§rStatus: §f" + status, Palette.AQUA));
+                    sender.sendMessage(Component.text("§rLast Address: §f" + playerip.get()
+                            .replace("/", ""), Palette.AQUA));
                     sender.sendMessage(Component.empty());
                 });
                 return true;
