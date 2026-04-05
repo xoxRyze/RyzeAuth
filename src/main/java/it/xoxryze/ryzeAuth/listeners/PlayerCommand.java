@@ -44,7 +44,6 @@ public class PlayerCommand implements Listener {
                             EVENT_NOT_REG));
                 }
             });
-            return;
         }
     }
 }

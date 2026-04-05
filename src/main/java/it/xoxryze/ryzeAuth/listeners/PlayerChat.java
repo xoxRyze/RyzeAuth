@@ -38,7 +38,6 @@ public class PlayerChat implements Listener {
                             EVENT_NOT_REG));
                 }
             });
-            return;
         }
     }
 }

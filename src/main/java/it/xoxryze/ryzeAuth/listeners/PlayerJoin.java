@@ -11,6 +11,8 @@ import org.bukkit.event.player.PlayerJoinEvent;
 
 import java.sql.SQLException;
 
+import static it.xoxryze.ryzeAuth.utils.PremiumUtils.isPremium;
+
 public class PlayerJoin implements Listener {
     private final AuthTable db;
     private final RyzeAuth main;
@@ -44,7 +46,17 @@ public class PlayerJoin implements Listener {
             main.getLogger().info("Current Address: " + currentIp);
             main.getLogger().info("Last Address: " + lastaddress);
             main.getLogger().info("Registered: " + registered);
+            main.getLogger().info("Premium: " + isPremium(player));
             main.getLogger().info(" ");
+
+            if (main.getConfig().getBoolean("config.premium-auto-authentication", true)) {
+                if (isPremium(player)) {
+                    main.getAuthenticated().add(player.getUniqueId());
+                    player.sendMessage(Component.text(main.getConfig().getString("messages.success-premium-login",
+                            "§aYou have successfully logged in automatically!")));
+                }
+            }
+
         });
     }
 }

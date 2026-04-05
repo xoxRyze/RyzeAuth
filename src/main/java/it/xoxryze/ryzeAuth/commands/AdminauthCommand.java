@@ -117,14 +117,14 @@ public class AdminauthCommand implements CommandExecutor {
                     return true;
                 }
 
-                Integer lunghezzapw = args[2].length();
+                int passwordLength = args[2].length();
 
-                if (lunghezzapw < PW_LENGTH_MIN) {
+                if (passwordLength < PW_LENGTH_MIN) {
                     sender.sendMessage(Component.text(SHORT_PASSWORD));
                     return true;
                 }
 
-                if (lunghezzapw > PW_LENGTH_MAX) {
+                if (passwordLength > PW_LENGTH_MAX) {
                     sender.sendMessage(Component.text(LONG_PASSWORD));
                     return true;
                 }
@@ -158,9 +158,9 @@ public class AdminauthCommand implements CommandExecutor {
                     return true;
                 }
 
-                Optional<String> playerpw = String.valueOf(db.getPlayerPassword(target)).describeConstable();
+                Optional<String> playerPassword = String.valueOf(db.getPlayerPassword(target)).describeConstable();
 
-                if (!playerpw.isPresent()) {
+                if (!playerPassword.isPresent()) {
                     sender.sendMessage(Component.text(main.getConfig().getString(
                             "messages.player-never-authenticated",
                             "§cThe player never authenticated!")));
@@ -207,20 +207,20 @@ public class AdminauthCommand implements CommandExecutor {
                     return true;
                 }
 
-                String playerpw = String.valueOf(db.getPlayerPassword(target));
+                String playerPassword = String.valueOf(db.getPlayerPassword(target));
                 if (!PasswordUtils.isValidPassword(args[2].toLowerCase(), sender.getName())) {
                     sender.sendMessage(Component.text(UNSECURE_PASSWORD));
                     return true;
                 }
 
-                Integer lunghezzapw = args[2].length();
+                Integer passwordLength = args[2].length();
 
-                if (lunghezzapw < PW_LENGTH_MIN) {
+                if (passwordLength < PW_LENGTH_MIN) {
                     sender.sendMessage(Component.text(SHORT_PASSWORD));
                     return true;
                 }
 
-                if (lunghezzapw > PW_LENGTH_MAX) {
+                if (passwordLength > PW_LENGTH_MAX) {
                     sender.sendMessage(Component.text(LONG_PASSWORD));
                     return true;
                 }

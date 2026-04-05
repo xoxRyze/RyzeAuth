@@ -38,7 +38,6 @@ public class PlayerMove implements Listener {
                             EVENT_NOT_REG));
                 }
             });
-            return;
         }
 
     }
@@ -51,7 +50,6 @@ public class PlayerMove implements Listener {
         if (!main.getAuthenticated().contains(player.getUniqueId())) {
             e.setCancelled(true);
             player.sendMessage(Component.text(EVENT_NOT_AUTH));
-            return;
         }
     }
 }

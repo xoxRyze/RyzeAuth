@@ -33,32 +33,32 @@ public class ConfigManager {
 
     private void loadMessages() {
         UNSECURE_PASSWORD = config.getString("messages.password-unsecure",
-                "§cLa password non è abbastanza sicura!");
+                "§cThe password is not secure enough!");
         SHORT_PASSWORD = config.getString("messages.short-password",
-                "§cLa password è troppo corta!");
+                "§cThe password is too short!");
         LONG_PASSWORD = config.getString("messages.long-password",
-                "§cLa password è troppo lunga!");
+                "§cThe password is too long!");
         PASSWORD_NOT_MATCH = config.getString("messages.password-not-match",
-                "§cLe password non coincidono!");
-        ALREADY_REGISTRED = config.getString("messages.already-registred",
-                "§cIl tuo account è già registrato!\nDigita §l/login <password>§c per autenticarti.");
+                "§cThe passwords do not match!");
+        ALREADY_REGISTRED = config.getString("messages.already-registered",
+                "§cYour account is already registered!\n§cType §l/login <password>§c to authenticate.");
         ALREADY_AUTHENTICATED = config.getString("messages.already-authenticated",
-                "§cHai già effettuato l'autenticazione!");
+                "§cYou are already authenticated!");
         NOT_REGISTERED = config.getString("messages.not-registered",
-                "§cDevi essere registrato per poterlo fare!");
-        PASSWORD_UNCORRECT = config.getString("messages.password-uncorrect",
-                "§cLa password che hai inserito non è corretta!");
+                "§cYou must be registered to do this!");
+        PASSWORD_UNCORRECT = config.getString("messages.password-incorrect",
+                "§cThe password you entered is incorrect!");
         NOT_AUTHENTICATED = config.getString("messages.not-authenticated",
-                "§cDevi essere autenticato per poterlo fare!");
+                "§cYou must be logged in to do this.!");
         SAME_PASSWORD = config.getString("messages.same-password",
-                "§cLa nuova password è identica a quella attuale!");
+                "§cThe new password is identical to the current one!");
         PLAYER_NEVER_JOIN = config.getString("messages.player-never-join",
-                "§cIl player non è mai entrato nel server!");
+                "§cThe player never joined the server!");
         NO_PERMISSION = config.getString("messages.no-permission",
-                "§cNon hai il permesso per poterlo fare!");
-        PW_LENGTH_MAX = config.getInt("config.password-max-lenght",
+                "§cYou don't have permission to do that!");
+        PW_LENGTH_MAX = config.getInt("config.password-max-length",
                 16);
-        PW_LENGTH_MIN = config.getInt("config.password-min-lenght",
+        PW_LENGTH_MIN = config.getInt("config.password-min-length",
                 3);
         EVENT_NOT_AUTH = config.getString("messages.event-not-authenticated",
                 "§cYou are not logged in, type /login <password>");

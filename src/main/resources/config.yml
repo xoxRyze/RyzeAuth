@@ -1,13 +1,14 @@
 config:
-  password-min-lenght: 5
-  password-max-lenght: 16
+  password-min-length: 5
+  password-max-length: 16
+  premium-auto-authentication: false # Premium auto authentication is in beta and may cause errors
 
 messages:
   no-permission: "§cYou don't have permission to do that!"
   reload-success: "§aYou reload the configuration file in §2%s §ams"
 
   register-completed: "§aYou have successfully registered!"
-  already-registred: "§cYour account is already registered!\nType §l/login <password>§c to authenticate.."
+  already-registered: "§cYour account is already registered!\nType §l/login <password>§c to authenticate.."
   not-registered: "§cYou must be registered to do this!"
   success-unregistered: "§aYou have successfully unregistered!"
   player-never-join: "§cThe player never joined the server!"
@@ -15,10 +16,11 @@ messages:
   success-kick: "\n §aᴋɪᴄᴋ\n §f%player%§7 kicked §f%target%§7 dal server."
 
   success-login: "§aYou have successfully logged in!"
+  success-premium-login: "§aYou have succesfully logged in automatically!"
   already-authenticated: "§cYou are already authenticated!"
   not-authenticated: "§cYou must be logged in to do this.!"
   event-not-authenticated: "§cYou are not logged in, type /login <password>"
-  password-uncorrect: "§cThe password you entered is incorrect!"
+  password-incorrect: "§cThe password you entered is incorrect!"
   player-never-authenticated: "§cThe player never authenticated!"
 
   password-unsecure: "§cThe password is not secure enough!"

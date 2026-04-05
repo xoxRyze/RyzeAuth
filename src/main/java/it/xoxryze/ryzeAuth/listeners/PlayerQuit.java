@@ -6,6 +6,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 
+import java.util.UUID;
+
 public class PlayerQuit implements Listener {
 
     private final RyzeAuth main;
@@ -16,13 +18,7 @@ public class PlayerQuit implements Listener {
 
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent e) {
-
-        Player player = e.getPlayer();
-
-        if (main.getAuthenticated().contains(player.getUniqueId())) {
-            main.getAuthenticated().remove(player.getUniqueId());
-        }
-
+        UUID playerUUID = e.getPlayer().getUniqueId();
+        main.getAuthenticated().remove(playerUUID);
     }
-
 }

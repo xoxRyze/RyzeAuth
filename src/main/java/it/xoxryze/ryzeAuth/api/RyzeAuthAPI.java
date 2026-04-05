@@ -1,6 +1,7 @@
 package it.xoxryze.ryzeAuth.api;
 
 import it.xoxryze.ryzeAuth.RyzeAuth;
+import it.xoxryze.ryzeAuth.utils.PremiumUtils;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
@@ -13,6 +14,10 @@ public class RyzeAuthAPI {
 
     public RyzeAuthAPI(RyzeAuth main) {
         this.main = main;
+    }
+
+    public boolean isPremium(Player player) {
+        return PremiumUtils.isPremium(player);
     }
 
     public boolean isAuthenticated(Player player) {

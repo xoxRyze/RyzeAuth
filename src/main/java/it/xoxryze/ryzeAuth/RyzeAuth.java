@@ -1,23 +1,20 @@
 package it.xoxryze.ryzeAuth;
 
+import it.xoxryze.ryzeAuth.api.RyzeAuthAPI;
 import it.xoxryze.ryzeAuth.database.DatabaseManager;
 import it.xoxryze.ryzeAuth.database.tables.AuthTable;
 import it.xoxryze.ryzeAuth.managers.ConfigManager;
 import it.xoxryze.ryzeAuth.utils.CustomLoader;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class RyzeAuth extends JavaPlugin {
 
-    private ConfigManager configManager;
-    private CustomLoader customLoader;
     private DatabaseManager dbManager;
     private AuthTable authTable;
-
-    private final List<UUID> authenticated = new ArrayList<>();
+    private RyzeAuthAPI ryzeAuthAPI;
+    private final Set<UUID> authenticated = Collections.synchronizedSet(new HashSet<>());
 
     @Override
     public void onEnable() {
@@ -27,8 +24,9 @@ public class RyzeAuth extends JavaPlugin {
         saveDefaultConfig();
         dbManager = new DatabaseManager(this);
         authTable = new AuthTable(dbManager);
-        configManager = new ConfigManager(this);
-        customLoader = new CustomLoader(this, authTable);
+        ryzeAuthAPI = new RyzeAuthAPI(this);
+        ConfigManager configManager = new ConfigManager(this);
+        CustomLoader customLoader = new CustomLoader(this, authTable);
         CustomLoader.initCommands();
         CustomLoader.initListener();
         getLogger().info("\nRyzeAuth è stato abilitato con successo!");
@@ -43,7 +41,12 @@ public class RyzeAuth extends JavaPlugin {
         return authTable;
     }
 
-    public List<UUID> getAuthenticated() {
+    public Set<UUID> getAuthenticated() {
         return authenticated;
     }
+
+    public RyzeAuthAPI getAPI() {
+        return ryzeAuthAPI;
+    }
+
 }

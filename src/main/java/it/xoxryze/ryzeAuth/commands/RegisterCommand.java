@@ -42,42 +42,45 @@ public class RegisterCommand implements CommandExecutor {
             return true;
         }
 
-        Optional<String> playerPasswordOpt = db.getPlayerPassword(player).join();
+         db.isRegistered(player).thenAccept(playerPasswordOpt -> {
 
-        if (playerPasswordOpt.isPresent()) {
-            player.sendMessage(Component.text(ALREADY_REGISTRED));
-            return true;
-        }
+            if (playerPasswordOpt.isPresent()) {
+                player.sendMessage(Component.text(ALREADY_REGISTRED));
+                return;
+            }
 
-        if (!args[0].equals(args[1])) {
-            player.sendMessage(Component.text(PASSWORD_NOT_MATCH));
-            return true;
-        }
+             if (!args[0].equals(args[1])) {
+                 player.sendMessage(Component.text(PASSWORD_NOT_MATCH));
+                 return;
+             }
 
-        Integer lunghezzapw = args[0].length();
+             int passwordLength = args[0].length();
 
-        if (lunghezzapw < PW_LENGTH_MIN) {
-            player.sendMessage(Component.text(SHORT_PASSWORD));
-            return true;
-        }
+             if (passwordLength < PW_LENGTH_MIN) {
+                 player.sendMessage(Component.text(SHORT_PASSWORD));
+                 return;
+             }
 
-        if (lunghezzapw > PW_LENGTH_MAX) {
-            player.sendMessage(Component.text(LONG_PASSWORD));
-            return true;
-        }
+             if (passwordLength > PW_LENGTH_MAX) {
+                 player.sendMessage(Component.text(LONG_PASSWORD));
+                 return;
+             }
 
-        if (PasswordUtils.isValidPassword(args[0], player.getName())) {
-            player.sendMessage(Component.text(UNSECURE_PASSWORD));
-            return true;
-        }
+             if (!PasswordUtils.isValidPassword(args[0], player.getName())) {
+                 player.sendMessage(Component.text(UNSECURE_PASSWORD));
+                 return;
+             }
 
-        db.updatePlayerPassword(player, PasswordUtils.hashPassword(args[0]));
-        db.updatePlayerAddress(player, String.valueOf(player.getAddress()));
-        String registrated = main.getConfig().getString("messages.register-completed",
-                "§aYou have successfully registered!");
-        player.sendMessage(Component.text(
-                registrated));
-        main.getAuthenticated().add(player.getUniqueId());
+             db.updatePlayerPassword(player, PasswordUtils.hashPassword(args[0]));
+             db.updatePlayerAddress(player, String.valueOf(player.getAddress()));
+
+             player.sendMessage(Component.text(
+                     main.getConfig().getString("messages.register-completed",
+                             "§aYou have successfully registered!")));
+             main.getAuthenticated().add(player.getUniqueId());
+
+        });
+
         return true;
     }
 }

@@ -10,7 +10,4 @@ public enum Permission {;
         return player.hasPermission("ryzeauth.command." + str);
     }
 
-    public static boolean hasNormPermission(Player player, String str) {
-        return player.hasPermission("ryzeauth." + str);
-    }
 }

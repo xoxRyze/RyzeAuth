@@ -10,8 +10,8 @@ public class CustomLoader {
     private static AuthTable authTable;
 
     public CustomLoader(RyzeAuth module, AuthTable authTable) {
-        this.module = module;
-        this.authTable = authTable;
+        CustomLoader.module = module;
+        CustomLoader.authTable = authTable;
     }
 
     public static void initListener() {
@@ -26,7 +26,6 @@ public class CustomLoader {
             LogUtils.logError(e, "An error occured in the listeners initialization.");
             module.getServer().getPluginManager().disablePlugin(module);
         }
-        return;
     }
 
     public static void initCommands() {
@@ -41,7 +40,6 @@ public class CustomLoader {
         } catch (Exception e) {
             LogUtils.logError(e, "An error occured in the commands initialization.");
             module.getServer().getPluginManager().disablePlugin(module);
-            return;
         }
     }
 
