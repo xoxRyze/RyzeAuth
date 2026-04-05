@@ -16,26 +16,24 @@ public class AdminauthTabCompleter implements TabCompleter {
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String @NotNull [] args) {
 
-        List<String> completitions = new ArrayList<>();
-
-        if (!sender.hasPermission(Permission.permission + ".tabcomplete")) {
-            return completitions;
-        }
+        List<String> completions = new ArrayList<>();
 
         if (args.length == 1) {
-            completitions.add("changepassword");
-            completitions.add("unregister");
-            completitions.add("register");
-            completitions.add("checkip");
-            completitions.add("kick");
-            completitions.add("dupeip");
+            String partial = args[0].toLowerCase();
+            if ("changepassword".startsWith(partial)) completions.add("changepassword");
+            if ("unregister".startsWith(partial)) completions.add("unregister");
+            if ("register".startsWith(partial)) completions.add("register");
+            if ("checkip".startsWith(partial)) completions.add("checkip");
+            if ("kick".startsWith(partial)) completions.add("kick");
+            if ("dupeip".startsWith(partial)) completions.add("dupeip");
         }
         if (args.length == 2) {
+            String partial = args[1].toLowerCase();
             for (Player p : Bukkit.getOnlinePlayers()) {
-                completitions.add(p.getName());
+                if (p.getName().startsWith(partial)) completions.add(p.getName());
             }
         }
 
-        return completitions;
+        return completions;
     }
 }

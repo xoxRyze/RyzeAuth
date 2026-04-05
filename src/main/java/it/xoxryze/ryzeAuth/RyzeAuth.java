@@ -29,12 +29,22 @@ public class RyzeAuth extends JavaPlugin {
         CustomLoader customLoader = new CustomLoader(this, authTable);
         CustomLoader.initCommands();
         CustomLoader.initListener();
-        getLogger().info("\nRyzeAuth è stato abilitato con successo!");
+
+        if (getServer().getOnlineMode()) {
+            getConfig().set("config.premium-auto-authentication", false);
+            saveConfig();
+            reloadConfig();
+            getLogger().info(
+                    "config.premium-auto-authentication has been set to false (Server must be in offline mode!)");
+        }
+
+        getLogger().info(
+                "RyzeAuth v" + getPluginMeta().getVersion() + "has been enabled!");
     }
 
     @Override
     public void onDisable() {
-        getLogger().info("RyzeAuth è stato disabilitato.");
+        getLogger().info("RyzeAuth has been disabled.");
     }
 
     public AuthTable getAuthTable() {
