@@ -1,5 +1,5 @@
 name: RyzeAuth
-version: 1.0-SNAPSHOT
+version: 1.0.0-SNAPSHOT
 main: it.xoxryze.ryzeAuth.RyzeAuth
 api-version: 1.21
 authors: [RyZeeTheBest]
