@@ -19,6 +19,7 @@ An advanced Authentication System for Minecraft server (Spigot/Paper)
 * `/adminauth kick <player> <reason>`
 * `/adminauth checkip <player>`
 * `/adminauth dupeip <player>`
+* `/adminauth reload`
  
 ## 🔐 Permissions
 
