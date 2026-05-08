@@ -27,7 +27,7 @@ public class AuthTable extends DatabaseTable {
             """;
 
     private static final String INSERT_AUTH = """
-            INSERT INTO auth(uuid, nickname)
+            INSERT or IGNORE INTO auth(uuid, nickname)
             VALUES (?, ?);
             """;
 

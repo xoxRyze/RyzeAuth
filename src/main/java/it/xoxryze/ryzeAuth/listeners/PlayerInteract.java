@@ -22,7 +22,7 @@ public class PlayerInteract implements Listener {
 
         Player player = e.getPlayer();
 
-        if (!main.getAuthenticated().contains(player.getUniqueId())) {
+        if (!main.getCacheManager().isAuthenticated(player)) {
             e.setCancelled(true);
             player.sendMessage(Component.text(EVENT_NOT_AUTH));
         }

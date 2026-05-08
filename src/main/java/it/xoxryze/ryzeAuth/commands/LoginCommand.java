@@ -1,6 +1,7 @@
 package it.xoxryze.ryzeAuth.commands;
 
 import it.xoxryze.ryzeAuth.RyzeAuth;
+import it.xoxryze.ryzeAuth.data.AuthPlayer;
 import it.xoxryze.ryzeAuth.database.tables.AuthTable;
 import it.xoxryze.ryzeAuth.utils.PasswordUtils;
 import net.kyori.adventure.text.Component;
@@ -41,7 +42,7 @@ public class LoginCommand implements CommandExecutor {
         CompletableFuture<Optional<String>> passwordFuture = db.getPlayerPassword(player);
 
         passwordFuture.thenAccept(playerPasswordOpt -> {
-            if (main.getAuthenticated().contains(player.getUniqueId())) {
+            if (main.getCacheManager().isAuthenticated(player)) {
                 player.sendMessage(Component.text(ALREADY_AUTHENTICATED));
                 return;
             }
@@ -53,7 +54,7 @@ public class LoginCommand implements CommandExecutor {
 
             String hashedPassword = playerPasswordOpt.get();
 
-            if (hashedPassword == null || hashedPassword.trim().isEmpty()) {
+            if (hashedPassword.trim().isEmpty()) {
                 player.sendMessage(Component.text(NOT_REGISTERED));
                 return;
             }
@@ -61,8 +62,8 @@ public class LoginCommand implements CommandExecutor {
             if (PasswordUtils.checkPassword(args[0], hashedPassword)) {
                 player.sendMessage(Component.text(main.getConfig().getString("messages.success-login",
                         "§aYou have successfully logged in!")));
-                main.getAuthenticated().add(player.getUniqueId());
-                db.updatePlayerAddress(player, String.valueOf(player.getAddress()));
+                main.getAuthenticated().add(new AuthPlayer(player.getUniqueId(), false));
+                db.updatePlayerAddress(player, String.valueOf(player.getAddress().getAddress().getHostAddress()));
             } else {
                 player.sendMessage(Component.text(PASSWORD_UNCORRECT));
             }

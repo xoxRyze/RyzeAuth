@@ -1,6 +1,7 @@
 package it.xoxryze.ryzeAuth.commands;
 
 import it.xoxryze.ryzeAuth.RyzeAuth;
+import it.xoxryze.ryzeAuth.data.AuthPlayer;
 import it.xoxryze.ryzeAuth.database.tables.AuthTable;
 import it.xoxryze.ryzeAuth.utils.Palette;
 import it.xoxryze.ryzeAuth.utils.PasswordUtils;
@@ -39,8 +40,10 @@ public class ChangepasswordCommand implements CommandExecutor {
             return true;
         }
 
-        if (!main.getAuthenticated().contains(player.getUniqueId())) {
-            player.sendMessage(Component.text("You must have to log in first!", Palette.RED));
+        AuthPlayer authPlayer = main.getCacheManager().getAuthPlayer(player).get();
+
+        if (!main.getAuthenticated().contains(authPlayer)) {
+            player.sendMessage(Component.text(EVENT_NOT_AUTH));
             return true;
         }
 
@@ -89,7 +92,7 @@ public class ChangepasswordCommand implements CommandExecutor {
         db.updatePlayerPassword(player, hashedNewPassword);
 
         player.sendMessage(Component.text(main.getConfig().getString("messages.success-changepassword",
-                "§aYou have successfully changed your password..")));
+                "§aYou have successfully changed your password.")));
         return true;
     }
 }

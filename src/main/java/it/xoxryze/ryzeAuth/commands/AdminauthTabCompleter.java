@@ -24,6 +24,7 @@ public class AdminauthTabCompleter implements TabCompleter {
             if ("unregister".startsWith(partial)) completions.add("unregister");
             if ("register".startsWith(partial)) completions.add("register");
             if ("checkip".startsWith(partial)) completions.add("checkip");
+            if ("checkpremium".startsWith(partial)) completions.add("checkpremium");
             if ("kick".startsWith(partial)) completions.add("kick");
             if ("dupeip".startsWith(partial)) completions.add("dupeip");
         }

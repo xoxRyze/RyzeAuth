@@ -18,7 +18,7 @@ public class PlayerQuit implements Listener {
 
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent e) {
-        UUID playerUUID = e.getPlayer().getUniqueId();
-        main.getAuthenticated().remove(playerUUID);
+        Player player = e.getPlayer();
+        main.getCacheManager().removeAuthPlayer(player);
     }
 }

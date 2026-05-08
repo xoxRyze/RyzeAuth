@@ -38,14 +38,14 @@ public class UnloginCommand implements CommandExecutor {
             return true;
         }
 
-        if (!main.getAuthenticated().contains(player.getUniqueId())) {
+        if (!main.getCacheManager().isAuthenticated(player)) {
             player.sendMessage(NOT_AUTHENTICATED);
             return true;
         }
 
         player.sendMessage(Component.text(main.getConfig().getString("messages.success-unlogin",
                 "§aYou have successfully logged out.")));
-        main.getAuthenticated().remove(player.getUniqueId());
+        main.getCacheManager().removeAuthPlayer(player);
         return true;
     }
 }

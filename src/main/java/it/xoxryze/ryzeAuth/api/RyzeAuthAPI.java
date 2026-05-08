@@ -1,7 +1,8 @@
 package it.xoxryze.ryzeAuth.api;
 
 import it.xoxryze.ryzeAuth.RyzeAuth;
-import it.xoxryze.ryzeAuth.utils.PremiumUtils;
+import it.xoxryze.ryzeAuth.data.AuthPlayer;
+import it.xoxryze.ryzeAuth.utils.MojangSessionAPI;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
@@ -16,20 +17,21 @@ public class RyzeAuthAPI {
         this.main = main;
     }
 
-    public boolean isPremium(Player player) {
-        return PremiumUtils.isPremium(player);
+    public CompletableFuture<Boolean> isPremium(Player player) {
+        return MojangSessionAPI.isAuthenticated(player.getName());
     }
 
     public boolean isAuthenticated(Player player) {
-        return main.getAuthenticated().contains(player.getUniqueId());
+        return main.getCacheManager().isAuthenticated(player);
     }
 
     public boolean addAuthenticate(Player player) {
-        return main.getAuthenticated().add(player.getUniqueId());
+        return main.getAuthenticated().add(new AuthPlayer(player.getUniqueId(), false));
     }
 
     public boolean removeAuthenticate(Player player) {
-        return main.getAuthenticated().remove(player.getUniqueId());
+        main.getCacheManager().removeAuthPlayer(player);
+        return true;
     }
 
     public CompletableFuture<Optional<String>> getLastAddress(OfflinePlayer player) {

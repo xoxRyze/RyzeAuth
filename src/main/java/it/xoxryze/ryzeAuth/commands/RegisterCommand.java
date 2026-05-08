@@ -1,6 +1,7 @@
 package it.xoxryze.ryzeAuth.commands;
 
 import it.xoxryze.ryzeAuth.RyzeAuth;
+import it.xoxryze.ryzeAuth.data.AuthPlayer;
 import it.xoxryze.ryzeAuth.database.tables.AuthTable;
 import it.xoxryze.ryzeAuth.utils.PasswordUtils;
 import net.kyori.adventure.text.Component;
@@ -37,7 +38,7 @@ public class RegisterCommand implements CommandExecutor {
             return true;
         }
 
-        if (main.getAuthenticated().contains(player.getUniqueId())) {
+        if (main.getCacheManager().isAuthenticated(player)) {
             player.sendMessage(Component.text(ALREADY_AUTHENTICATED));
             return true;
         }
@@ -72,12 +73,12 @@ public class RegisterCommand implements CommandExecutor {
              }
 
              db.updatePlayerPassword(player, PasswordUtils.hashPassword(args[0]));
-             db.updatePlayerAddress(player, String.valueOf(player.getAddress()));
+             db.updatePlayerAddress(player, String.valueOf(player.getAddress().getAddress().getHostAddress()));
 
              player.sendMessage(Component.text(
                      main.getConfig().getString("messages.register-completed",
                              "§aYou have successfully registered!")));
-             main.getAuthenticated().add(player.getUniqueId());
+             main.getCacheManager().getAuthenticated().add(new AuthPlayer(player.getUniqueId(), false));
 
         });
 

@@ -2,7 +2,6 @@ plugins {
     id 'java'
     id("xyz.jpenilla.run-paper") version "2.3.1"
     id 'com.gradleup.shadow' version '8.3.8'
-
 }
 
 
@@ -19,7 +18,8 @@ repositories {
 
 dependencies {
     compileOnly("io.papermc.paper:paper-api:1.21.8-R0.1-SNAPSHOT")
-    implementation "org.mindrot:jbcrypt:0.4"
+    implementation 'org.mindrot:jbcrypt:0.4'
+    implementation 'com.googlecode.json-simple:json-simple:1.1.1'
 }
 
 tasks {

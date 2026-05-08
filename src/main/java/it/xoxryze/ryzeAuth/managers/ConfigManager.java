@@ -24,6 +24,7 @@ public class ConfigManager {
     public static int PW_LENGTH_MAX;
     public static int PW_LENGTH_MIN;
     public static String EVENT_NOT_AUTH;
+    public static String PLAYER_NOT_ONLINE;
 
     public ConfigManager(RyzeAuth main) {
         this.main = main;
@@ -54,11 +55,13 @@ public class ConfigManager {
                 "§cThe new password is identical to the current one!");
         PLAYER_NEVER_JOIN = config.getString("messages.player-never-join",
                 "§cThe player never joined the server!");
+        PLAYER_NOT_ONLINE = config.getString("messages.player-not-online",
+                "§cThe player is not online!");
         NO_PERMISSION = config.getString("messages.no-permission",
                 "§cYou don't have permission to do that!");
-        PW_LENGTH_MAX = config.getInt("config.password-max-length",
+        PW_LENGTH_MAX = config.getInt("config.password.max-length",
                 16);
-        PW_LENGTH_MIN = config.getInt("config.password-min-length",
+        PW_LENGTH_MIN = config.getInt("config.password.min-length",
                 3);
         EVENT_NOT_AUTH = config.getString("messages.event-not-authenticated",
                 "§cYou are not logged in, type /login <password>");

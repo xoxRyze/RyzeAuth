@@ -1,7 +1,8 @@
 config:
-  password-min-length: 5
-  password-max-length: 16
-  premium-auto-authentication: false # Premium auto authentication is in beta and may cause errors
+  premium-auto-authentication: false
+  password:
+    min-length: 6
+    max-length: 24
 
 messages:
   no-permission: "§cYou don't have permission to do that!"
@@ -12,11 +13,12 @@ messages:
   not-registered: "§cYou must be registered to do this!"
   success-unregistered: "§aYou have successfully unregistered!"
   player-never-join: "§cThe player never joined the server!"
+  player-not-online: "§cThe player is not online!"
   success-unlogin: "§aYou have successfully logged out."
   success-kick: "\n §aᴋɪᴄᴋ\n §f%player%§7 kicked §f%target%§7 dal server."
 
   success-login: "§aYou have successfully logged in!"
-  success-premium-login: "§aYou have succesfully logged in automatically!"
+  success-premium-login: "§aYou have successfully logged in automatically!"
   already-authenticated: "§cYou are already authenticated!"
   not-authenticated: "§cYou must be logged in to do this.!"
   event-not-authenticated: "§cYou are not logged in, type /login <password>"
@@ -42,12 +44,14 @@ messages:
   usage-adminauth-changepassword: "§cUse /adminauth changepassword <player> <password>"
   usage-adminauth-kick: "§cUse /adminauth kick <player> <reason>"
   usage-adminauth-dupeip: "§cUse /adminauth dupeip [<player> | <ip>]"
+  usage-adminauth-checkpremium: "§cUse /adminauth checkpremium <player>"
 
-  # permissions #
+  # PERMISSIONS #
   # /unlogin -> ryzeauth.command.unlogin #
   # /unregister -> ryzeauth.command.unregister #
   # /changepassword -> ryzeauth.command.changepassword #
   # /adminauth -> ryzeauth.command.adminauth #
+  # /adminauth checkpremium -> ryzeauth.command.adminauth.checkpremium #
   # /adminauth dupeip -> ryzeauth.command.adminauth.dupeip #
   # /adminauth checkip -> ryzeauth.command.adminauth.checkip #
   # /adminauth reload -> ryzeauth.command.adminnauth.reload #
@@ -55,4 +59,3 @@ messages:
   # /adminauth unregister -> ryzeauth.command.adminauth.unregister #
   # /adminauth changepassword -> ryzeauth.command.adminauth.changepassword #
   # /adminauth register -> ryzeauth.command.adminauth.register #
-  # tabcomplete -> ryzeauth.command.tabcomplete #

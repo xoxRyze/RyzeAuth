@@ -27,7 +27,7 @@ public class PlayerChat implements Listener {
     public void onPlayerChat (PlayerChatEvent e) {
         Player player = e.getPlayer();
 
-        if (!main.getAuthenticated().contains(player.getUniqueId())) {
+        if (!main.getCacheManager().isAuthenticated(player)) {
             e.setCancelled(true);
             authTable.isRegistered(player).thenAccept(optionalPassword -> {
                 if (optionalPassword.isPresent()) {

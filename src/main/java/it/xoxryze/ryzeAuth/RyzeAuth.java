@@ -1,10 +1,14 @@
 package it.xoxryze.ryzeAuth;
 
 import it.xoxryze.ryzeAuth.api.RyzeAuthAPI;
+import it.xoxryze.ryzeAuth.data.AuthPlayer;
 import it.xoxryze.ryzeAuth.database.DatabaseManager;
 import it.xoxryze.ryzeAuth.database.tables.AuthTable;
 import it.xoxryze.ryzeAuth.managers.ConfigManager;
+import it.xoxryze.ryzeAuth.managers.CacheManager;
 import it.xoxryze.ryzeAuth.utils.CustomLoader;
+import it.xoxryze.ryzeAuth.utils.Metrics;
+import it.xoxryze.ryzeAuth.utils.MojangSessionAPI;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.*;
@@ -14,7 +18,9 @@ public class RyzeAuth extends JavaPlugin {
     private DatabaseManager dbManager;
     private AuthTable authTable;
     private RyzeAuthAPI ryzeAuthAPI;
-    private final Set<UUID> authenticated = Collections.synchronizedSet(new HashSet<>());
+    private CacheManager cacheManager;
+    private MojangSessionAPI mojangSessionAPI;
+    private it.xoxryze.ryzeAuth.utils.Metrics metrics;
 
     @Override
     public void onEnable() {
@@ -22,14 +28,16 @@ public class RyzeAuth extends JavaPlugin {
             getDataFolder().mkdir();
         }
         saveDefaultConfig();
+        cacheManager = new CacheManager();
         dbManager = new DatabaseManager(this);
         authTable = new AuthTable(dbManager);
         ryzeAuthAPI = new RyzeAuthAPI(this);
         ConfigManager configManager = new ConfigManager(this);
         CustomLoader customLoader = new CustomLoader(this, authTable);
+        metrics = new Metrics(this, 30816);
+        mojangSessionAPI = new MojangSessionAPI();
         CustomLoader.initCommands();
         CustomLoader.initListener();
-
         if (getServer().getOnlineMode()) {
             getConfig().set("config.premium-auto-authentication", false);
             saveConfig();
@@ -39,7 +47,7 @@ public class RyzeAuth extends JavaPlugin {
         }
 
         getLogger().info(
-                "RyzeAuth v" + getPluginMeta().getVersion() + "has been enabled!");
+                "RyzeAuth v" + getPluginMeta().getVersion() + " has been enabled!");
     }
 
     @Override
@@ -51,8 +59,12 @@ public class RyzeAuth extends JavaPlugin {
         return authTable;
     }
 
-    public Set<UUID> getAuthenticated() {
-        return authenticated;
+    public CacheManager getCacheManager() {
+        return cacheManager;
+    }
+
+    public List<AuthPlayer> getAuthenticated() {
+        return getCacheManager().getAuthenticated();
     }
 
     public RyzeAuthAPI getAPI() {

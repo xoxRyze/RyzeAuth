@@ -50,18 +50,25 @@ public class UnregisterCommand implements CommandExecutor {
             return true;
         }
 
-        if (main.getAuthenticated().contains(player.getUniqueId())) {
-            if (!PasswordUtils.checkPassword(args[0], String.valueOf(playerpw))) {
-                player.sendMessage(Component.text(PASSWORD_UNCORRECT));
-                return true;
-            }
-            db.updatePlayerPassword(player, null);
-            main.getAuthenticated().remove(player.getUniqueId());
-            player.sendMessage(Component.text(main.getConfig().getString("messages.success-unregistered",
-                    "§aYou have successfully unregistered!")));
+        if (!main.getCacheManager().isAuthenticated(player)) {
+            player.sendMessage(Component.text(NOT_AUTHENTICATED));
             return true;
         }
-        player.sendMessage(Component.text(NOT_AUTHENTICATED));
+
+        playerpw.thenAccept(passwordOpt -> {
+            if (passwordOpt.isEmpty()) {
+                player.sendMessage(Component.text(NOT_REGISTERED));
+                return;
+            }
+            if (!PasswordUtils.checkPassword(args[0], passwordOpt.get())) {
+                player.sendMessage(Component.text(PASSWORD_UNCORRECT));
+                return;
+            }
+            db.updatePlayerPassword(player, null);
+            main.getCacheManager().removeAuthPlayer(player);
+            player.sendMessage(Component.text(main.getConfig().getString("messages.success-unregistered",
+                    "§aYou have successfully unregistered!")));
+        });
         return true;
     }
 }

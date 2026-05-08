@@ -33,7 +33,7 @@ public class PlayerCommand implements Listener {
             return;
         }
 
-        if (!main.getAuthenticated().contains(player.getUniqueId())) {
+        if (!main.getCacheManager().isAuthenticated(player)) {
             e.setCancelled(true);
             authTable.isRegistered(player).thenAccept(optionalPassword -> {
                 if (optionalPassword.isPresent()) {

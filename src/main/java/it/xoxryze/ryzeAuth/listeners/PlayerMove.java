@@ -27,7 +27,7 @@ public class PlayerMove implements Listener {
     public void onPlayerMove(PlayerMoveEvent e) {
         Player player = e.getPlayer();
 
-        if (!main.getAuthenticated().contains(player.getUniqueId())) {
+        if (!main.getCacheManager().isAuthenticated(player)) {
             e.setCancelled(true);
             authTable.isRegistered(player).thenAccept(optionalPassword -> {
                 if (optionalPassword.isPresent()) {
@@ -47,7 +47,7 @@ public class PlayerMove implements Listener {
 
         Player player = e.getPlayer();
 
-        if (!main.getAuthenticated().contains(player.getUniqueId())) {
+        if (!main.getCacheManager().isAuthenticated(player)) {
             e.setCancelled(true);
             player.sendMessage(Component.text(EVENT_NOT_AUTH));
         }
